@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单管理</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <div>
+        <div class="filter-container">
+            <el-button type="danger" class="butT" @click="deleteAll" icon="el-icon-delete-solid" round>批量删除</el-button>
+            <el-input placeholder="标题" v-model="pagination.title" style="width: 200px;" class="filter-item" clearable>></el-input>
+            <el-input placeholder="风格" v-model="pagination.style" style="width: 120px;" class="filter-item" clearable>></el-input>
+            <el-button @click="getAll()" class="dalfBut" icon="el-icon-search" plain>搜索</el-button>
+            <el-button type="primary" class="butT" @click="handleCreate()" icon="el-icon-folder-add" plain>添加歌单</el-button>
+        </div>
+        <el-table  current-row-key="id" :data="dataList" stripe highlight-current-row @selection-change="handleSelectionChange"  border>
+            <el-table-column type="selection" ></el-table-column>
+            <el-table-column label="ID" prop="id" align="center"  width="50"></el-table-column>
+            <el-table-column label="歌曲图片" prop="pic" align="center"  width="315">
+                <template slot-scope="scope" >
+                    <div>
+                        <el-image :src="picUrl+scope.row.pic" style="width: 100px;height: 100px"></el-image>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="风格" prop="style"  align="center"></el-table-column>
+            <el-table-column label="标题" prop="title"  align="center"></el-table-column>
+            <el-table-column label="简介" prop="introduction" align="center"></el-table-column>
+
+            <el-table-column label="资源更新" align="center">
+                <template slot-scope="scope">
+                    <el-upload :action="updateSongImg(scope.row.id)" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <el-button type="primary" size="mini" icon="el-icon-picture" plain>更新封面</el-button>
+                    </el-upload>
+                    <el-button type="info" size="mini" icon="el-icon-edit-outline" plain>歌单整理</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
+                    <el-button type="danger"  size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!--分页组件-->
+        <div class="pagination-container" style="text-align: center">
+            <el-pagination
+                    background
+                    class="pagiantion"
+                    @current-change="handleCurrentChange"
+                    :current-page="pagination.currentPage"
+                    :page-size="pagination.pageSize"
+                    layout="total, prev, pager, next, jumper"
+                    :total="pagination.total">
+            </el-pagination>
+        </div>
+
+        <!--添加歌曲-->
+        <el-dialog title="添加歌单" :visible.sync="centerDialogVisible">
+            <el-form label-width="120px" :model="registerForm">
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="registerForm.title"></el-input>
+                </el-form-item>
+                <el-form-item label="风格" prop="style">
+                    <el-input v-model="registerForm.style"></el-input>
+                </el-form-item>
+                <el-form-item label="简介" prop="introduction">
+                    <el-input v-model="registerForm.introduction"></el-input>
+                </el-form-item>
+                <el-form-item label="封面">
+                    <input type="file" name="file" v-model="registerForm.pic"/>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                    <span class="dialog-footer">
+                        <el-button type="danger" @click="cancel()" icon="el-icon-close" circle></el-button>
+                        <el-button type="primary" @click="handleAdd()" icon="el-icon-check" circle></el-button>
+                     </span>
+            </template>
+        </el-dialog>
+
+        <!--编辑歌曲信息-->
+        <el-dialog title="编辑" :visible.sync="editVisible">
+            <el-form label-width="60px" :model="editForm" >
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="editForm.title"></el-input>
+                </el-form-item>
+                <el-form-item label="风格" prop="style">
+                    <el-input v-model="editForm.style"></el-input>
+                </el-form-item>
+                <el-form-item label="简介" prop="introduction">
+                    <el-input v-model="editForm.introduction"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="danger" @click="cancel()"  icon="el-icon-close" circle></el-button>
+                    <el-button type="primary" @click="handleEdit()" icon="el-icon-check" circle></el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+</div>
+
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            centerDialogVisible: false,
+            editVisible: false,
+            editForm: {},//编辑歌单数据
+            registerForm:{},//添加歌单数据
+            dataList: [],
+            multipleSelection: [],//批量删除记录
+            pagination: {//分页相关模型数据
+                currentPage: 1,//当前页码
+                pageSize:5,//每页显示的记录数
+                total:0,//总记录数
+                style:'',
+                title:''
+            },
+            picUrl:'http://localhost:8080',
+        },
+        created(){
+        },
+        mounted(){
+            this.getAll();
+        },
+        methods:{
+            //切换页码
+            handleCurrentChange(currentPage) {
+                //修改页码值为当前选中的页码值
+                this.pagination.currentPage = currentPage;
+                //执行查询
+
+                this.getAll();
+            },
+            getAll() {
+                param = "?title=" + this.pagination.title;
+                param +="&style"+this.pagination.style;
+
+                axios.get("/SongMenu/" + this.pagination.currentPage + "/" + this.pagination.pageSize + param).then((res) => {
+                    this.pagination.pageSize = res.data.data.size;
+                    this.pagination.currentPage = res.data.data.current;
+                    this.pagination.total = res.data.data.total;
+                    this.dataList = res.data.data.records;
+                });
+            },
+            //添加
+            handleAdd() {
+                axios.post("/SongMenu", this.registerForm).then((res) => {
+                    //判断当前操作是否成功
+                    if (String(res.data.code) === '1') {
+                        //1.关闭弹层
+                        this.centerDialogVisible = false;
+                        this.$message.success(res.data.msg);
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
+                }).finally(() => {
+
+                    //2.重新加载数据
+                    this.getAll();
+                });
+            },
+            //删除歌单
+            handleDelete(row) {
+                this.$confirm("此操作永久删除当前歌单信息，是否继续？", "提示", {type: "info"}).then(() => {
+                    axios.delete("/SongMenu/" + row.id).then((res) => {
+                        if (String(res.data.code) === '1') {
+                            this.$message.success(res.data.msg);
+                        } else {
+                            this.$message.error(res.data.msg);
+                        }
+                    }).finally(() => {
+
+                        //2.重新加载数据
+                        this.getAll();
+                    });
+                }).catch(() => {
+                    this.$message.info("取消操作");
+                });
+            },
+            //删除批量歌单
+            handleAllDelete(row) {
+                axios.delete("/SongMenu/" + row.id)
+            },
+            //批量删除
+            deleteAll(){
+                this.$confirm("此操作永久删除当前歌单信息，是否继续？", "提示", {type: "info"}).then(() => {
+                    for (let item of this.multipleSelection.value) {
+                        this.handleAllDelete(item);
+                    }
+                }).finally(()=>{
+                    this.getAll();
+                    this.multipleSelection.value = [];
+                }).catch(()=>{
+                    this.$message.info("取消操作");
+                });
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection.value = val;
+            },
+            //弹出编辑窗口
+            handleUpdate(row) {
+                axios.get("/SongMenu/" + row.id).then((res) => {
+                    if (res.data.data != null && String(res.data.code) === '1') {
+                        this.editVisible = true;
+                        this.editForm = res.data.data;
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
+                }).finally(() => {
+                    //2.重新加载数据
+                    this.getAll();
+                });
+            },//修改
+            handleEdit() {
+                axios.put("/SongMenu", this.editForm).then((res) => {
+                    //判断当前操作是否成功
+                    if (String(res.data.code) === '1') {
+                        //1.关闭弹层
+                        this.editVisible = false;
+                        this.$message.success(res.data.msg);
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
+                }).finally(() => {
+                    //2.重新加载数据
+                    this.getAll();
+                });
+            },
+            //添加歌曲弹窗
+            handleCreate() {
+                this.centerDialogVisible = true;
+                this.resetForm();
+            },
+            //重置表单
+            resetForm() {
+                this.registerForm = {};
+            },
+            //取消
+            cancel() {
+                this.centerDialogVisible = false;
+                this.editVisible = false;
+                this.$message.info("当前操作取消");
+            },
+            //图片上传
+            handleAvatarSuccess(res, file) {
+                //console.log(res);
+                this.imageUrl = res.data;
+                //console.log("图片预览的url:" + this.imageUrl);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === "image/jpeg";
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            updateSongImg(id){
+                return 'http://localhost:8080/SongMenu/upload/image?id='+id;
+            }
+        }
+    })
+</script>
+</body>
+</html>
