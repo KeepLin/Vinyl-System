@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface SongMapper extends BaseMapper<Song> {
 
+    //歌曲分页信息展示
     @Select("<script>"+
             "select s.* from song s"+
             "<where>"+
@@ -24,4 +25,23 @@ public interface SongMapper extends BaseMapper<Song> {
             "</where >"+
             "</script>")
     List<Song> selectByPage(Page<Song> page, @Param("name") String name,@Param("singerid") Integer singerid);
+
+
+    @Select("<script>"+
+            "select s.* from song s"+
+            "<where>"+
+            "<if test='id != null'>"+
+            "s.id IN (select song_id from list_song " +
+            "<where>"+
+            "<if test='id != null'>"+
+            "song_list_id = #{id}"+
+            "</if>"+
+            "</where>)"+
+            "</if>"+
+            "<if test='name != null'>"+
+            "and s.name LIKE CONCAT('%',#{name},'%')"+
+            "</if>"+
+            "</where>"+
+            "</script>")
+    List<Song> selectBySongList(Page<Song> page, @Param("id") Integer id,@Param("name") String name);
 }

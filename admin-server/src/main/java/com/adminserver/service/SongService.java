@@ -12,6 +12,9 @@ public interface SongService extends IService<Song> {
     //分页显示
     Page<Song> selectByPage(Page<Song> page, String name, Integer singerid);
 
+    //歌单分页显示
+    Page<Song> selectBySongList(Page<Song> page, Integer id,String name );
+
     //添加歌曲
     Boolean AddSong(Song song);
 

@@ -18,12 +18,21 @@
             <el-table-column type="selection" ></el-table-column>
 
             <el-table-column type="index" label="序号" align="center" ></el-table-column>
-            <el-table-column label="歌名" prop="name"  align="center"  ></el-table-column>
+            <el-table-column label="歌名" prop="name"  align="center" >
+                <template slot-scope="scope">
+                    {{replaceLName(scope.row.name)}}
+                </template>
+            </el-table-column>
+            <el-table-column label="歌手" prop="name"  align="center" >
+                <template slot-scope="scope">
+                    {{replaceFName(scope.row.name)}}
+                </template>
+            </el-table-column>
             <el-table-column label="专辑" prop="album" align="center" ></el-table-column>
             <el-table-column label="时长" prop="time" align="center" ></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="warning" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-star-off" circle></el-button>
+                    <el-button type="info" size="mini" @click="AddSongList(scope.row)" icon="el-icon-star-off" circle></el-button>
                     <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" icon="el-icon-edit" circle></el-button>
                     <el-button type="danger"  size="mini" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
                 </template>
@@ -105,8 +114,16 @@
                 //修改页码值为当前选中的页码值
                 this.pagination.currentPage = currentPage;
                 //执行查询
-
                 this.getAll();
+            },
+            //歌手与歌曲分词
+            replaceFName(str){
+                let arr = str.split('-');
+                return arr[0]
+            },
+            replaceLName(str){
+                let arr = str.split('-');
+                return arr[1]
             },
             getAll() {
                 param = "?name=" + this.pagination.name;

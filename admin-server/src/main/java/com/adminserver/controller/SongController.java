@@ -3,13 +3,10 @@ package com.adminserver.controller;
 import com.adminserver.pojo.Song;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -41,7 +38,7 @@ public class SongController {
 
     //分页显示
     @GetMapping("/{currentPage}/{pageSize}")
-    public R<Page> allSinger(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String name,Integer singerid){
+    public R<Page> allSong(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String name,Integer singerid){
         Page<Song> pageInfo = new Page(currentPage,pageSize);
         if(name != null && name.length()>0){
             songService.selectByPage(pageInfo,name,null);
@@ -53,7 +50,19 @@ public class SongController {
             songService.selectByPage(pageInfo,null,null);
             return R.success(pageInfo,"数据库歌曲消息列表");
         }
+    }
 
+    //通过歌单ID获取歌曲信息
+    @GetMapping("/SongList/{currentPage}/{pageSize}")
+    public R<Page> selectBySongList(@PathVariable Integer currentPage, @PathVariable Integer pageSize, Integer id,String name){
+        Page<Song> pageInfo = new Page(currentPage,pageSize);
+        if(name != null && name.length()>0){
+            songService.selectBySongList(pageInfo,id,name);
+            return R.success(pageInfo,"数据库歌曲消息列表");
+        }else {
+            songService.selectBySongList(pageInfo,id,null);
+            return R.success(pageInfo,"数据库歌曲消息列表");
+        }
     }
 
     //添加歌曲
@@ -69,7 +78,7 @@ public class SongController {
 
     //删除歌曲
     @DeleteMapping("/{id}")
-    public R<String> delete(@PathVariable Integer id) throws FileNotFoundException {
+    public R<String> delete(@PathVariable Integer id){
         if (songService.removeById(id)){
             return R.success("歌曲删除成功");
         }else {

@@ -34,7 +34,7 @@
                     <el-upload :action="updateSongImg(scope.row.id)" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <el-button type="primary" size="mini" icon="el-icon-picture" plain>更新封面</el-button>
                     </el-upload>
-                    <el-button type="info" size="mini" icon="el-icon-edit-outline" plain>歌单整理</el-button>
+                    <el-button type="info" size="mini" icon="el-icon-edit-outline" @click="EditSongList(scope.row)" plain>歌单整理</el-button>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -101,6 +101,49 @@
                 </span>
             </template>
         </el-dialog>
+
+        <!--歌单歌曲-->
+        <el-dialog title="歌曲管理" :visible.sync="SongDialogVisible">
+            <div class="filter-container">
+                <el-button type="danger" class="butT" @click="deleteAllSongId()" icon="el-icon-delete" plain>批量删除</el-button>
+                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;margin-left: 30%" class="filter-item" clearable></el-input>
+                <el-button @click="getSongBySongListID()" class="dalfBut" icon="el-icon-search" plain>搜索歌单音乐</el-button>
+            </div>
+            <el-table  current-row-key="id" :data="SongList" stripe highlight-current-row @selection-change="handleSelectionSongID"  border>
+                <el-table-column type="selection" ></el-table-column>
+                <el-table-column type="index" label="序号" align="center" style="width: 50px;"></el-table-column>
+                <el-table-column label="歌名" prop="name"  align="center" >
+                    <template slot-scope="scope">
+                        {{replaceLName(scope.row.name)}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="歌手" prop="name"  align="center" >
+                    <template slot-scope="scope">
+                        {{replaceFName(scope.row.name)}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="专辑" prop="album" align="center" ></el-table-column>
+                <el-table-column label="时长" prop="time" align="center" ></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="danger"  size="mini" @click="SongDelete(scope.row)" icon="el-icon-delete" circle></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!--分页组件-->
+            <div class="pagination-container" style="text-align: center">
+                <el-pagination
+                        background
+                        class="SongPagination"
+                        @current-change="handleSongChange"
+                        :current-page="SongPagination.currentPage"
+                        :page-size="SongPagination.pageSize"
+                        layout="total, prev, pager, next, jumper"
+                        :total="SongPagination.total">
+                </el-pagination>
+            </div>
+        </el-dialog>
+
     </div>
 </div>
 
@@ -115,18 +158,28 @@
     new Vue({
         el: '#app',
         data:{
+            SongDialogVisible: false,//歌曲弹窗
             centerDialogVisible: false,
             editVisible: false,
             editForm: {},//编辑歌单数据
             registerForm:{},//添加歌单数据
             dataList: [],
-            multipleSelection: [],//批量删除记录
+            SongList: [],
+            multipleSelection: [],//批量删除歌单记录
+            SongIdSelection: [],//批量删除歌单音乐记录
             pagination: {//分页相关模型数据
                 currentPage: 1,//当前页码
                 pageSize:5,//每页显示的记录数
                 total:0,//总记录数
                 style:'',
                 title:''
+            },
+            SongPagination:{
+                currentPage: 1,//当前页码
+                pageSize:5,//每页显示的记录数
+                total:0,//总记录数
+                name:'',
+                id:''
             },
             picUrl:'http://localhost:8080',
         },
@@ -141,9 +194,24 @@
                 //修改页码值为当前选中的页码值
                 this.pagination.currentPage = currentPage;
                 //执行查询
-
                 this.getAll();
             },
+            //歌曲切换页码
+            handleSongChange(currentPage){
+                this.SongPagination.currentPage = currentPage;
+                //执行切页查询
+                this.getSongBySongListID();
+            },
+            //歌手与歌曲分词
+            replaceFName(str){
+                let arr = str.split('-');
+                return arr[0]
+            },
+            replaceLName(str){
+                let arr = str.split('-');
+                return arr[1]
+            },
+
             getAll() {
                 param = "?title=" + this.pagination.title;
                 param +="&style"+this.pagination.style;
@@ -250,6 +318,7 @@
             },
             //取消
             cancel() {
+                this.SongDialogVisible = false;
                 this.centerDialogVisible = false;
                 this.editVisible = false;
                 this.$message.info("当前操作取消");
@@ -274,7 +343,64 @@
             },
             updateSongImg(id){
                 return 'http://localhost:8080/SongMenu/upload/image?id='+id;
-            }
+            },
+            getSongBySongListID(){
+                param = "?id=" + this.SongPagination.id;
+                param +="&name"+this.SongPagination.name;
+
+                axios.get("/song/SongList/" + this.SongPagination.currentPage + "/" + this.SongPagination.pageSize + param).then((res) => {
+                    this.SongPagination.pageSize = res.data.data.size;
+                    this.SongPagination.currentPage = res.data.data.current;
+                    this.SongPagination.total = res.data.data.total;
+                    this.SongList = res.data.data.records;
+                });
+            },
+            //歌单音乐弹窗
+            EditSongList(row){
+                this.SongDialogVisible = true;
+                this.SongPagination.id = row.id;
+                this.getSongBySongListID()
+            },
+            //统计删除歌曲索引
+            handleSelectionSongID(val) {
+                this.SongIdSelection.value = val;
+            },
+            //删除批量歌单歌曲
+            handleAllDeleteSong(row) {
+                axios.get("/ListSong/" + row.id+"/"+this.SongPagination.id);
+            },
+            //批量删除歌曲索引
+            deleteAllSongId(){
+                this.$confirm("此操作永久删除当前歌单音乐，是否继续？", "提示", {type: "info"}).then(() => {
+                    for (let item of this.SongIdSelection.value) {
+                        this.handleAllDeleteSong(item);
+                    }
+                }).finally(()=>{
+                    this.SongIdSelection.value = [];
+                    this.getSongBySongListID();
+                }).catch(()=>{
+                    this.$message.info("取消操作");
+                });
+            },
+            //删除单首歌曲索引
+            SongDelete(row) {
+                this.$confirm("此操作永久删除当前歌单信息，是否继续？", "提示", {type: "info"}).then(() => {
+                    axios.get("/ListSong/" + row.id+"/"+this.SongPagination.id).then((res) => {
+                        if (String(res.data.code) === '1') {
+                            this.$message.success(res.data.msg);
+                        } else {
+                            this.$message.error(res.data.msg);
+                        }
+                    }).finally(() => {
+                        //2.重新加载数据
+                        this.getSongBySongListID();;
+                    });
+                }).catch(() => {
+                    this.$message.info("取消操作");
+                });
+            },
+
+
         }
     })
 </script>

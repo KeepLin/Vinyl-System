@@ -25,6 +25,11 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     }
 
     @Override
+    public Page<Song> selectBySongList(Page<Song> page, Integer id, String name) {
+        return page.setRecords(this.baseMapper.selectBySongList(page,id,name));
+    }
+
+    @Override
     public Boolean AddSong(Song song) {
         Song copy = new Song();
         BeanUtils.copyProperties(song,copy);

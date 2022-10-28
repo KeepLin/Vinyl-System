@@ -116,14 +116,23 @@
         <el-dialog title="歌曲管理" :visible.sync="SongDialogVisible">
             <div class="filter-container">
                 <el-button type="danger" class="butT" @click="deleteAll()" icon="el-icon-delete" plain>批量删除</el-button>
-                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;" class="filter-item" clearable></el-input>
+                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;margin-left: 50%" class="filter-item" clearable></el-input>
                 <el-button @click="getSongBySingID()" class="dalfBut" icon="el-icon-search" plain>搜索</el-button>
                 <el-button type="primary" class="butT" @click="SongCreate()" icon="el-icon-circle-plus" plain>添加歌曲</el-button>
             </div>
             <el-table  current-row-key="id" :data="SongList" stripe highlight-current-row @selection-change="handleSelectionChange"  border>
                 <el-table-column type="selection" ></el-table-column>
                 <el-table-column type="index" label="序号" align="center" style="width: 50px;"></el-table-column>
-                <el-table-column label="歌名" prop="name"  align="center"  ></el-table-column>
+                <el-table-column label="歌名" prop="name"  align="center" >
+                    <template slot-scope="scope">
+                        {{replaceLName(scope.row.name)}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="歌手" prop="name"  align="center" >
+                    <template slot-scope="scope">
+                        {{replaceFName(scope.row.name)}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="专辑" prop="album" align="center" ></el-table-column>
                 <el-table-column label="时长" prop="time" align="center" ></el-table-column>
                 <el-table-column label="操作" align="center">
@@ -169,7 +178,7 @@
                 <template #footer>
                     <span class="dialog-footer">
                         <el-button @click="SongCancel()" icon="el-icon-close" circle></el-button>
-                        <el-button type="primary" @click="SongAdd()" icon="el-icon-check" circle>确 定</el-button>
+                        <el-button type="primary" @click="SongAdd()" icon="el-icon-check" circle></el-button>
                      </span>
                 </template>
             </el-dialog>
@@ -195,7 +204,7 @@
                 </template>
             </el-dialog>
 
-        </el-dialog>>
+        </el-dialog>
 
         <!--添加歌手弹窗-->
         <el-dialog title="添加歌手" :visible.sync="centerDialogVisible">
@@ -338,8 +347,16 @@
                 //修改页码值为当前选中的页码值
                 this.pagination.currentPage = currentPage;
                 //执行查询
-
                 this.getAll();
+            },
+            //歌手与歌曲分词
+            replaceFName(str){
+                let arr = str.split('-');
+                return arr[0]
+            },
+            replaceLName(str){
+                let arr = str.split('-');
+                return arr[1]
             },
             //歌曲切换页码
             handleSongChange(currentPage){
