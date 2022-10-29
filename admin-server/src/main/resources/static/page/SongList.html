@@ -10,8 +10,8 @@
     <div>
         <div class="filter-container">
             <el-button type="danger" class="butT" @click="deleteAll" icon="el-icon-delete-solid" round>批量删除</el-button>
-            <el-input placeholder="标题" v-model="pagination.title" style="width: 200px;" class="filter-item" clearable>></el-input>
-            <el-input placeholder="风格" v-model="pagination.style" style="width: 120px;" class="filter-item" clearable>></el-input>
+            <el-input placeholder="标题" v-model="pagination.title" style="width: 200px;" class="filter-item" clearable></el-input>
+            <el-input placeholder="风格" v-model="pagination.style" style="width: 120px;" class="filter-item" clearable></el-input>
             <el-button @click="getAll()" class="dalfBut" icon="el-icon-search" plain>搜索</el-button>
             <el-button type="primary" class="butT" @click="handleCreate()" icon="el-icon-folder-add" plain>添加歌单</el-button>
         </div>
@@ -102,11 +102,11 @@
             </template>
         </el-dialog>
 
-        <!--歌单歌曲-->
+        <!--歌单歌曲管理-->
         <el-dialog title="歌曲管理" :visible.sync="SongDialogVisible">
             <div class="filter-container">
                 <el-button type="danger" class="butT" @click="deleteAllSongId()" icon="el-icon-delete" plain>批量删除</el-button>
-                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;margin-left: 30%" class="filter-item" clearable></el-input>
+                <el-input placeholder="筛选歌单" v-model="SongPagination.name" style="width: 200px;margin-left: 30%" class="filter-item" clearable></el-input>
                 <el-button @click="getSongBySongListID()" class="dalfBut" icon="el-icon-search" plain>搜索歌单音乐</el-button>
             </div>
             <el-table  current-row-key="id" :data="SongList" stripe highlight-current-row @selection-change="handleSelectionSongID"  border>

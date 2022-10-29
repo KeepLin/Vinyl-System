@@ -1,9 +1,6 @@
 package com.adminserver.service.impl;
 
-
-import com.adminserver.mapper.SingerMapper;
 import com.adminserver.mapper.SongMapper;
-import com.adminserver.pojo.Singer;
 import com.adminserver.pojo.Song;
 import com.adminserver.service.SongService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

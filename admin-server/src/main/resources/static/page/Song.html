@@ -73,6 +73,35 @@
             </template>
         </el-dialog>
 
+        <!--将歌曲添加指定歌单-->
+        <el-dialog title="添加到歌单" :visible.sync="SongDialogVisible">
+            <div class="filter-container">
+                <el-input placeholder="标题" v-model="SongPagination.title" style="width: 200px;" class="filter-item" clearable></el-input>
+                <el-button @click="getSongList()" class="dalfBut" icon="el-icon-search" plain>搜索</el-button>
+            </div>
+            <el-table current-row-key="id" :data="SongList" stripe highlight-current-row>
+                <el-table-column type="index" label="序号" align="center" style="width: 50px;"></el-table-column>
+                <el-table-column label="标题" prop="title"  align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="primary" size="mini" @click="AddListSong(scope.row)" icon="el-icon-circle-plus-outline" circle></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <div class="pagination-container" style="text-align: center">
+                <el-pagination
+                        background
+                        class="SongPagination"
+                        @current-change="handleSongChange"
+                        :current-page="SongPagination.currentPage"
+                        :page-size="SongPagination.pageSize"
+                        layout="total, prev, pager, next, jumper"
+                        :total="SongPagination.total">
+                </el-pagination>
+            </div>
+        </el-dialog>
+
     </div>
 
 </div>
@@ -86,11 +115,17 @@
     new Vue({
         el: '#app',
         data:{
+            SongDialogVisible: false,//添加到歌单弹窗
             centerDialogVisible: false,
             editVisible: false,
             editForm: {},//编辑歌曲数据
             registerForm:{},//添加歌曲数据
+            listSongForm:{
+                songId: '',
+                songListId: ''
+            },//添加歌曲到歌单数据
             dataList: [],
+            SongList: [],
             multipleSelection: [],//批量删除记录
             pagination: {//分页相关模型数据
                 currentPage: 1,//当前页码
@@ -99,8 +134,16 @@
                 name:'',
                 singerid:''
             },
-            minute:1,
-            second:1
+            SongPagination:{
+                currentPage: 1,//当前页码
+                pageSize: 5,//每页显示的记录数
+                total: 0,//总记录数
+                title:'',
+                style:''
+            },
+            songId: '',
+            minute: 1,
+            second: 1
         },
         created(){
 
@@ -115,6 +158,10 @@
                 this.pagination.currentPage = currentPage;
                 //执行查询
                 this.getAll();
+            },
+            handleSongChange(currentPage){
+                this.SongPagination.currentPage = currentPage;
+                this.getSongList();
             },
             //歌手与歌曲分词
             replaceFName(str){
@@ -136,7 +183,39 @@
                     this.dataList = res.data.data.records;
                 });
             },
+            //歌单弹窗
+            AddSongList(row){
+                this.SongDialogVisible = true;
+                this.songId = row.id;
+                this.getSongList();
+            },
+            AddListSong(row){
+                this.listSongForm.songId = this.songId;
+                this.listSongForm.songListId = row.id;
+                axios.post("/ListSong", this.listSongForm).then((res) => {
+                    //判断当前操作是否成功
+                    if (String(res.data.code) === '1') {
+                        //1.关闭弹层
+                        this.$message.info("添加成功");
+                        this.$message.success(res.data.msg);
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
+                }).finally(()=>{
+                    this.getSongList()
+                });
+            },
+            getSongList() {
+                param = "?title=" + this.SongPagination.title;
+                param +="&style"+this.SongPagination.style;
 
+                axios.get("/SongMenu/" + this.SongPagination.currentPage + "/" + this.pagination.pageSize + param).then((res) => {
+                    this.SongPagination.pageSize = res.data.data.size;
+                    this.SongPagination.currentPage = res.data.data.current;
+                    this.SongPagination.total = res.data.data.total;
+                    this.SongList = res.data.data.records;
+                });
+            },
             //删除歌曲
             handleDelete(row) {
                 this.$confirm("此操作永久删除当前歌歌曲信息，是否继续？", "提示", {type: "info"}).then(() => {
@@ -215,6 +294,7 @@
             },
             //取消
             cancel() {
+                this.SongDialogVisible = false;
                 this.centerDialogVisible = false;
                 this.editVisible = false;
                 this.$message.info("当前操作取消");

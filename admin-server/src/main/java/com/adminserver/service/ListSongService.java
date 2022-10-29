@@ -9,4 +9,7 @@ public interface ListSongService extends IService<ListSong> {
     //删除歌曲索引
     Boolean DeleteSong(Integer SongId,Integer SongListId);
 
+    //添加歌曲到歌单中
+    Boolean AddSong(ListSong song);
+
 }

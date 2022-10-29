@@ -1,13 +1,11 @@
 package com.adminserver.controller;
 
+import com.adminserver.pojo.ListSong;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.ListSongService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,6 +20,15 @@ public class ListSongController {
             return R.success("歌曲删除成功");
         }else {
             return R.error("歌曲删除失败");
+        }
+    }
+
+    @PostMapping
+    public R<String> addListSong(@RequestBody ListSong temp){
+        if (listSongService.AddSong(temp)){
+            return R.success("歌曲添加成功");
+        }else {
+            return R.success("歌曲已在歌单中");
         }
     }
 
