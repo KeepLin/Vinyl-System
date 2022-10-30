@@ -4,6 +4,7 @@ import com.adminserver.mapper.SongListMapper;
 import com.adminserver.pojo.SongList;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongListService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> implements SongListService {
@@ -88,5 +94,26 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
         }else {
             return R.error("没有此歌单信息");
         }
+    }
+
+    @Override
+    public List<Integer> countStyle() {
+        Map<String, Integer> map = new ConcurrentHashMap<>();
+        QueryWrapper<SongList> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("style");
+        List<String> styleList = listObjs(queryWrapper, Object::toString);
+        for (String item:styleList){
+            if(map.containsKey(item)){
+                Integer count=map.get(item)+1;
+                map.put(item,count);
+            }else {
+                map.put(item,1);
+            }
+        }
+
+        Collection<Integer> collection = map.values();
+        List<Integer> integerList = new ArrayList<>(collection);
+
+        return integerList;
     }
 }

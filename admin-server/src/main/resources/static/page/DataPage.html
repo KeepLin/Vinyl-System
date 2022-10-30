@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统数据</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/index.css">
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="card-content">
+                        <div class="card-left">
+                            <i class="el-icon-user"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-num">{{consumerCount}}</div>
+                            <div>用户总数</div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span="6">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="card-content">
+                        <div class="card-left">
+                            <i class="el-icon-s-data"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-num">{{songCount}}</div>
+                            <div>歌曲总数</div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span="6">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="card-content">
+                        <div class="card-left">
+                            <i class="el-icon-s-custom"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-num">{{singerCount}}</div>
+                            <div>歌手数量</div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span="6">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="card-content">
+                        <div class="card-left">
+                            <i class="el-icon-s-order"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-num">{{SongMenu}}</div>
+                            <div>歌单数量</div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <h3>用户性别比例</h3>
+                <el-card class="cav-info" shadow="hover" :body-style="{ padding: '0px' }" >
+                    <div id="userSex" style="width: 845px;height:250px;align-items: center;text-align: center"></div>
+                </el-card>
+            </el-col>
+            <el-col :span="12">
+                <h3>歌曲类型</h3>
+                <el-card class="cav-info" shadow="hover" :body-style="{ padding: '0px' }" >
+                    <div id="songStyle" style="width: 845px;height:250px;align-items: center;text-align: center"></div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <h3>歌手性别比例</h3>
+                <el-card class="cav-info" shadow="hover" :body-style="{ padding: '0px' }" >
+                    <div id="singerSex" style="width: 845px;height:250px;align-items: center;text-align: center"></div>
+                </el-card>
+            </el-col>
+            <el-col :span="12">
+                <h3>歌手国籍</h3>
+                <el-card class="cav-info" shadow="hover" :body-style="{ padding: '0px' }" >
+                    <div id="country" style="width: 845px;height:250px;align-items: center;text-align: center"></div>
+                </el-card>
+            </el-col>
+        </el-row>
+    </template>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+<!--引入Echarts-->
+<script src="../plugins/echarts/dist/echarts.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            consumerCount:0,
+            songCount:0,
+            SongMenu:0,
+            singerCount:0,
+        },
+        mounted(){
+            this.GetConsumerCount();
+            this.GetSongCount();
+            this.GetSingerCount();
+            this.GetSongMenuCount();
+            this.GetUserSex();
+            this.GetSingerSex();
+            this.GetSongStyle();
+            this.GetSingerCountry();
+        },
+        methods:{
+            //统计用户
+            GetConsumerCount(){
+                axios.get("/consumer/count").then((res) => {
+                    this.consumerCount = res.data.data;
+                });
+            },
+
+            //统计歌曲
+            GetSongCount(){
+                axios.get("/song/count").then((res) => {
+                    this.songCount = res.data.data;
+                });
+            },
+            //统计歌单
+            GetSongMenuCount(){
+                axios.get("/SongMenu/count").then((res) => {
+                    this.SongMenu = res.data.data;
+                });
+            },
+            //统计歌手
+            GetSingerCount(){
+                axios.get("/singer/count").then((res) => {
+                    this.singerCount = res.data.data;
+                });
+            },
+            //统计用户性别
+            GetUserSex(){
+                axios.get("/consumer/count/UserSex").then((res)=>{
+                    this.ConsumerInit(res.data.data);
+                })
+            },
+            //统计歌手性别
+            GetSingerSex(){
+                axios.get("/singer/count/singerSex").then((res)=>{
+                    this.SingSexInit(res.data.data);
+                })
+            },
+            //统计歌单风格
+            GetSongStyle(){
+                axios.get("/SongMenu/count/style").then((res)=>{
+                    this.SongStyleInit(res.data.data);
+                })
+            },
+            //统计歌手国籍
+            GetSingerCountry(){
+                axios.get("/singer/count/country").then((res)=>{
+                    this.CountryInit(res.data.data);
+                })
+            },
+            //用户男女比例饼图
+            ConsumerInit(Array){
+                const SexChart = echarts.init(document.getElementById('userSex'));
+                const SexOption = {
+                    legend:{
+                        orient: 'horizontal',
+                        data:['男','女']
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: '75%',
+                        data: [
+                            {
+                                value: Array[0],
+                                name: "女",
+                            },
+                            {
+                                value: Array[1],
+                                name: "男",
+                            }
+
+                        ],
+
+                    }]
+                };
+                SexChart.setOption(SexOption);
+            },
+
+            //歌曲风格柱状图
+            SongStyleInit(StyleArray){
+                const SongChart = echarts.init(document.getElementById('songStyle'));
+                const SongOption = {
+                    xAxis: {
+                        type: "category",
+                        data: ["华语", "粤语", "欧美", "日韩", "BGM", "轻音乐", "乐器"],
+                    },
+                    yAxis: {
+                        type: "value",
+                    },
+                    series: [
+                        {
+                            data: StyleArray,
+                            type: "bar",
+                            barWidth: "20%",
+                        },
+                    ],
+                }
+                SongChart.setOption(SongOption);
+            },
+
+            //歌手男女比例饼图
+            SingSexInit(singerArray){
+                const SingSexChart = echarts.init(document.getElementById('singerSex'));
+                const SingSexOption = {
+                    legend:{
+                        orient: 'horizontal',
+                        data:['男','女']
+                    },
+                    series: [{
+                        type: 'pie',
+                        radius: '75%',
+                        data: [
+                            {
+                                value: singerArray[0],
+                                name: "女",
+                            },
+                            {
+                                value: singerArray[1],
+                                name: "男",
+                            },
+                        ],
+
+                    }]
+                };
+                SingSexChart.setOption(SingSexOption);
+            },
+
+            //歌手国籍柱状图
+            CountryInit(CountyArray){
+                const CountryChart = echarts.init(document.getElementById('country'));
+                const CountryOption = {
+                    xAxis: {
+                        type: "category",
+                        data: ["中国", "韩国", "意大利", "新加坡", "美国", "马来西亚", "西班牙", "日本"],
+                    },
+                    yAxis: {
+                        type: "value",
+                    },
+                    series: [
+                        {
+                            data: CountyArray,
+                            type: "bar",
+                            barWidth: "20%",
+                        },
+                    ],
+                }
+                CountryChart.setOption(CountryOption);
+            }
+        }
+    })
+</script>
+<style scoped>
+    .card-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 100px;
+        padding-left: 20%;
+        text-align: center;
+    }
+
+    .card-left {
+        display: flex;
+        font-size: 3rem;
+    }
+
+    .card-right {
+        flex: 1;
+        font-size: 14px;
+    }
+
+    .card-num {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    h3 {
+        margin: 10px 0;
+        text-align: center;
+    }
+    .cav-info {
+        border-radius: 6px;
+        overflow: hidden;
+        height: 250px;
+        background-color: white;
+    }
+</style>
+</body>
+</html>

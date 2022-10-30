@@ -26,4 +26,6 @@ public interface SongService extends IService<Song> {
 
     //根据歌手id查找歌曲
     List<Song> SearchById(Integer id);
+
+    Integer countSong();
 }

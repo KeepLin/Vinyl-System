@@ -20,8 +20,7 @@ public class SongController {
     //统计歌曲数量
     @GetMapping("/count")
     public R<Integer> countSong(){
-        Integer songCount = 0;
-        return R.success(songCount,"redis歌曲总数");
+        return R.success(songService.countSong(), "歌曲总数");
     }
 
 

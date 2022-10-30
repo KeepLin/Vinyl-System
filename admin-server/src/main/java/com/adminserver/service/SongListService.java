@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public interface SongListService extends IService<SongList> {
     Page<SongList> selectByPage(Page<SongList> page, String title, String style);
@@ -16,4 +17,7 @@ public interface SongListService extends IService<SongList> {
 
     //更新歌单图片
     R<String> updateSongListPic(MultipartFile multipartFile, int id) throws FileNotFoundException;
+
+    //统计歌单风格
+    List<Integer> countStyle();
 }

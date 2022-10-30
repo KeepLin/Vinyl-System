@@ -60,5 +60,10 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         return songList;
     }
 
+    @Override
+    public Integer countSong() {
+        return count();
+    }
+
 
 }

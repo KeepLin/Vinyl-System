@@ -3,8 +3,6 @@ package com.adminserver.controller;
 import com.adminserver.pojo.SongList;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongListService;
-import com.alibaba.fastjson.JSONArray;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -14,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import java.util.List;
 
@@ -29,17 +26,15 @@ public class SongListController {
     //统计歌单数量
     @GetMapping("/count")
     public R<Integer> countSongList(){
-        Integer songListCount = 0;
 
-
-        return R.success(songListCount,"redis歌单总数");
+        return R.success(service.count(), "歌单总数");
     }
 
     //统计歌单风格
     @GetMapping("/count/style")
     public R<List<Integer>> countStyle(){
-
-       return null;
+        List<Integer> array = service.countStyle();
+        return R.success(array, "歌单风格");
     }
 
     @GetMapping("/{id}")
