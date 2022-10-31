@@ -56,7 +56,7 @@
             <el-table-column label="ID" prop="id" align="center"></el-table-column>
             <el-table-column label="歌手图片" prop="pic" align="center" >
                 <template slot-scope="scope" >
-                    <el-image :src="picUrl+scope.row.pic"></el-image>
+                    <el-image :src="picUrl+scope.row.pic" style="width: 150px; height: 150px"></el-image>
                     <el-upload
                             :action="uploadUrl(scope.row.id)"
                             :show-file-list="false"

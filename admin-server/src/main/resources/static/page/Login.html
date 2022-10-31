@@ -56,7 +56,7 @@
                     if(String(res.data.code)==='1'){
                         localStorage.setItem('userInfo',JSON.stringify(res.data.data))
                         this.$message.success(res.data.msg);
-                        //window.location.href = 'AdminHome.html'
+                        window.location.href = 'Home.html'
                     }else {
                         this.$message.error(res.data.msg);
                     }
