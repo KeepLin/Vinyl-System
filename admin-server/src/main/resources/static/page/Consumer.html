@@ -42,15 +42,12 @@
                     <div>{{ changeSex(scope.row.sex) }}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="出生" prop="birth"  align="center">
+            <el-table-column label="创建时间" prop="createTime"  align="center">
                 <template slot-scope="scope">
-                    <div>{{ getBirth(scope.row.birth) }}</div>
+                    <div>{{ getBirth(scope.row.createTime) }}</div>
                 </template>
             </el-table-column>
             <el-table-column label="手机号码" prop="phoneNum" align="center" ></el-table-column>
-            <el-table-column label="邮箱" prop="email" align="center" ></el-table-column>
-            <el-table-column label="个性签名" prop="introduction" align="introduction" ></el-table-column>
-            <el-table-column label="地区" prop="location" align="location" ></el-table-column>
             <el-table-column label="操作" align="center" width="315">
                 <template slot-scope="scope">
                     <el-button @click="goCommentPage(scope.row)">定单详情</el-button>

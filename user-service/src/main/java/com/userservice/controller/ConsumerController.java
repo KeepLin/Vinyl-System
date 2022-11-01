@@ -1,6 +1,7 @@
 package com.userservice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.userservice.pojo.Consumer;
 import com.userservice.resultUtils.R;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 
 @Slf4j
@@ -37,9 +39,42 @@ public class ConsumerController {
     }
 
     //用户登录
-    @GetMapping("/login")
-    public R<Consumer> login(HttpServletRequest request, String phoneNum,String password){
-        return service.Login(request,phoneNum,password);
+    @PostMapping("/login")
+    public R<Consumer> login(HttpServletRequest request,@RequestBody Consumer consumer){
+        return service.Login(request,consumer);
+    }
+
+    //用户登出
+    @GetMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        request.getSession().removeAttribute("name");
+        return R.success("退出成功");
+    }
+
+    //用户注册
+    @PostMapping
+    public R<String> addUser(@RequestBody Consumer consumer){
+        consumer.setCreateTime(new Date());
+        consumer.setUpdateTime(new Date());
+        boolean flag = service.save(consumer);
+        if (flag){
+            return R.success("注册成功");
+        }else {
+            return R.error("注册失败");
+        }
+    }
+
+    //修改密码
+    @PutMapping
+    public R<String> ChangePassword(@RequestBody Consumer consumer){
+        UpdateWrapper<Consumer> wrapper = new UpdateWrapper<>();
+        wrapper.set("password",consumer.getPassword()).set("update_time",new Date()).eq("phone_num",consumer.getPhoneNum());
+        boolean flag = service.update(wrapper);
+        if (flag){
+            return R.success("修改成功");
+        }else {
+            return R.error("修改失败");
+        }
     }
 
 

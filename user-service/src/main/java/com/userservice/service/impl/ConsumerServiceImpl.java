@@ -21,10 +21,10 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
     }
 
     @Override
-    public R<Consumer> Login(HttpServletRequest request, String phoneNum,String password) {
+    public R<Consumer> Login(HttpServletRequest request, Consumer consumer) {
         QueryWrapper<Consumer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone_num",phoneNum);
-        queryWrapper.eq("password",password);
+        queryWrapper.eq("phone_num",consumer.getPhoneNum());
+        queryWrapper.eq("password",consumer.getPassword());
         Consumer user = new Consumer();
         user = baseMapper.selectOne(queryWrapper);
         if(user != null){

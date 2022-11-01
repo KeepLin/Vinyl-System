@@ -19,14 +19,6 @@ public class Consumer {
 
     private String phoneNum;
 
-    private String email;
-
-    private Date birth;
-
-    private String introduction;
-
-    private String location;
-
     private String avator;
 
     @TableField(fill = FieldFill.INSERT)

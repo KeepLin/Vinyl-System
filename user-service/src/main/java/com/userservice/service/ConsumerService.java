@@ -13,7 +13,7 @@ public interface ConsumerService extends IService<Consumer> {
     Page<Consumer> selectByPage(Page<Consumer> page , Integer id, Integer sex);
 
     //用户登录
-    R<Consumer> Login(HttpServletRequest request,String phoneNum,String password);
+    R<Consumer> Login(HttpServletRequest request,Consumer consumer);
 
 
 }
