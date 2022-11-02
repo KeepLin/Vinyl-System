@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音乐资源平台</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/index.css">
+</head>
+<body>
+<div id="app" >
+    <div>
+        <el-menu
+                :default-active="activeIndex"
+                class="el-menu-demo"
+                mode="horizontal"
+                background-color="#545c64"
+                text-color="#fff"
+                active-text-color="#ffd04b"
+        >
+            <el-menu-item class="el-icon-headset">Music</el-menu-item>
+            <el-menu-item  v-for="(item,id) in menuList" :key="id" :index="item.id" @click="menuHandle(item,false)">
+                {{item.name}}
+            </el-menu-item>
+            <el-menu-item>
+                <el-input v-model="keywords" placeholder="搜索音乐" @key.enter="goSearch" clearable></el-input>
+                <el-button type="primary" icon="el-icon-search" @click="goSearch()">搜索</el-button>
+            </el-menu-item>
+        </el-menu>
+    </div>
+
+    <div  v-loading="loading">
+        <div  v-show="loading"></div>
+        <iframe
+                id="cIframe"
+                name="cIframe"
+                :src="iframeUrl"
+                width="100%"
+                height="850px"
+                frameborder="0"
+                v-show="!loading"
+        ></iframe>
+    </div>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+<!--<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>-->
+<script src="../plugins/echarts/dist/echarts.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data(){
+            return{
+                activeIndex: '1',
+                menuActived: '1',
+                searchPage:{
+                    id: 5,
+                    name: '搜索页面',
+                    url: 'Search.html',
+                },
+                menuList: [
+                    {
+                        id: '1',
+                        name: '首页',
+                        url: 'Home.html',
+                    },
+                    {
+                        id: '2',
+                        name: '歌手',
+                        url: 'Test1.html',
+                    },
+                    {
+                        id: '3',
+                        name: '歌单',
+                        url: 'Test2.html',
+                    },
+                    {
+                        id: '4',
+                        name: '我的音乐',
+                        url: 'Test2.html',
+                    },
+                ],
+                iframeUrl: 'Home.html',
+                headTitle: '首页',
+                goBackFlag: false,
+                loading: true,
+                timer: null,
+                keywords:'' //搜索关键字
+
+            }
+        },
+        beforeDestroy() {
+            this.timer = null
+            clearTimeout(this.timer)
+        },
+        created(){
+            this.closeLoading()
+        },
+        mounted(){
+        },
+        methods:{
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            goBack() {
+                const menu = this.menuList.find(item=>item.id===this.menuActived)
+                this.menuHandle(menu,false)
+            },
+            menuHandle(item, goBackFlag) {
+                this.loading = true
+                this.menuActived = item.id
+                this.iframeUrl = item.url
+                this.headTitle = item.name
+                this.goBackFlag = goBackFlag
+                this.closeLoading()
+            },
+            closeLoading(){
+                this.timer = null
+                this.timer = setTimeout(()=>{
+                    this.loading = false
+                },1000)
+            },
+            goSearch(){
+                if (this.keywords!==""){
+                    window.localStorage.setItem("SearchName",this.keywords);
+                    this.menuHandle(this.searchPage,this.goBackFlag)
+                }
+            }
+
+        }
+
+    })
+</script>
+
+</body>
+</html>

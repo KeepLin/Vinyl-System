@@ -101,4 +101,9 @@ public class SongListController {
             return R.error("歌单删除失败");
         }
     }
+
+    @GetMapping("/allSongList")
+    public List<SongList> AllSongList(){
+        return service.list();
+    }
 }

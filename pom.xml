@@ -12,6 +12,7 @@
         <module>admin-server</module>
         <module>user-service</module>
         <module>eureka-server</module>
+        <module>fegin-api</module>
     </modules>
 
     <parent>

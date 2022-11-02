@@ -1,6 +1,7 @@
 package com.adminserver.controller;
 
 import com.adminserver.pojo.Singer;
+import com.adminserver.pojo.Song;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SingerService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -118,4 +119,11 @@ public class SingerController {
     public R<String> updateSingerPic(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,@RequestParam("id") int id) throws FileNotFoundException {
         return singerService.updateSingerPic(multipartFile,id);
     }
+
+    @GetMapping("/allSinger")
+    public List<Singer> AllSinger(){
+        List<Singer> list = singerService.list();
+        return list;
+    }
+
 }
