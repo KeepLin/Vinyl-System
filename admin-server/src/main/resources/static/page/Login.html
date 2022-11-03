@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>黑胶唱片定制后台管理</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/index.css">
+    <link rel="stylesheet" type="text/css" href="../styles/Login.css">
+</head>
+<body>
+<div id="login-app"  class="login-container">
+    <div class="title">黑胶唱片定制后台管理</div>
+   <div class="login">
+       <el-form :model="ruleForm" :rules="rules">
+           <el-form-item prop="name" align="center">
+               <el-input v-model="ruleForm.name"></el-input>
+           </el-form-item>
+           <el-form-item prop="password">
+               <el-input type="password" placeholder="password" v-model="ruleForm.password" ></el-input>
+           </el-form-item>
+           <el-form-item>
+               <el-button class="login-btn" type="primary" @click="handleLogin">登录</el-button>
+           </el-form-item>
+       </el-form>
+   </div>
+
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#login-app',
+        data() {
+            return {
+                ruleForm: {
+                    name: 'admin',
+                    password: '123456'
+                },
+                rules: {
+                    name: [{required: true, message: "请输入用户名", trigger: "blur"}],
+                    password: [{required: true, message: "请输入密码", trigger: "blur"}]
+                }
+            }
+        },
+        methods :{
+            handleLogin(){
+                axios({
+                    method: 'post',
+                    url: '/admin/login',
+                    data: this.ruleForm
+                }).then((res)=>{
+                    if(String(res.data.code)==='1'){
+                        localStorage.setItem('userInfo',JSON.stringify(res.data.data))
+                        this.$message.success(res.data.msg);
+                        window.location.href = 'Home.html'
+                    }else {
+                        this.$message.error(res.data.msg);
+                    }
+                })
+        }
+    },
+    })
+</script>
+
+</body>
+</html>
