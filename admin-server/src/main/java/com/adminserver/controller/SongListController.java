@@ -3,6 +3,7 @@ package com.adminserver.controller;
 import com.adminserver.pojo.SongList;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongListService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -104,6 +105,8 @@ public class SongListController {
 
     @GetMapping("/allSongList")
     public List<SongList> AllSongList(){
-        return service.list();
+        QueryWrapper<SongList> queryWrapper = new QueryWrapper<>();
+        queryWrapper.last("limit 10");
+        return service.list(queryWrapper);
     }
 }

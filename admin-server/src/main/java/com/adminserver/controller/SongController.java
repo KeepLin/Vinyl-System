@@ -113,10 +113,20 @@ public class SongController {
     public R<List<Song>> SongByName(@PathVariable Integer singerId){
         List<Song> songList = songService.SearchById(singerId);
         if (songList!=null){
-            return R.success(songList,"查询此歌曲");
+            return R.success(songList,"查询此歌手歌曲");
         }else {
             return R.error("系统暂无符合此歌手的歌曲");
         }
+    }
+
+    @GetMapping("/SongBySingerId/{id}")
+    public List<Song> SongBySingerId(@PathVariable Integer id){
+        return songService.SearchById(id);
+    }
+
+    @GetMapping("/SongBySongListId/{id}")
+    public List<Song> SongBySongListId(@PathVariable Integer id,@RequestParam("name") String name){
+        return songService.selectBySongListId(id,name);
     }
 
 

@@ -4,6 +4,7 @@ package com.adminserver.service;
 import com.adminserver.pojo.Song;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,5 +28,9 @@ public interface SongService extends IService<Song> {
     //根据歌手id查找歌曲
     List<Song> SearchById(Integer id);
 
+    //统计歌曲数量
     Integer countSong();
+
+    //歌单歌曲
+    List<Song> selectBySongListId(Integer id,String name);
 }

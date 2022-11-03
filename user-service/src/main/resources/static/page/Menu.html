@@ -16,13 +16,13 @@
                 text-color="#fff"
                 active-text-color="#ffd04b"
         >
-            <el-menu-item class="el-icon-headset">Music</el-menu-item>
+            <el-menu-item icon="el-icon-headset">Music</el-menu-item>
             <el-menu-item  v-for="(item,id) in menuList" :key="id" :index="item.id" @click="menuHandle(item,false)">
                 {{item.name}}
             </el-menu-item>
             <el-menu-item>
                 <el-input v-model="keywords" placeholder="搜索音乐" @key.enter="goSearch" clearable></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="goSearch()">搜索</el-button>
+                <el-button type="primary"  @click="goSearch()">搜索</el-button>
             </el-menu-item>
         </el-menu>
     </div>
@@ -70,17 +70,17 @@
                     {
                         id: '2',
                         name: '歌手',
-                        url: 'Test1.html',
+                        url: 'Singer.html',
                     },
                     {
                         id: '3',
                         name: '歌单',
-                        url: 'Test2.html',
+                        url: 'SongMenu.html',
                     },
                     {
                         id: '4',
                         name: '我的音乐',
-                        url: 'Test2.html',
+                        url: 'MyMusic.html',
                     },
                 ],
                 iframeUrl: 'Home.html',

@@ -65,5 +65,10 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         return count();
     }
 
+    @Override
+    public List<Song> selectBySongListId(Integer id, String name) {
+        return this.baseMapper.selectBySongListId(id,name);
+    }
+
 
 }

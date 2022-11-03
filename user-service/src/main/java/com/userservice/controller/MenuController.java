@@ -1,14 +1,13 @@
 package com.userservice.controller;
 
 import com.fegin.pojo.Singer;
+import com.fegin.pojo.Song;
 import com.fegin.pojo.SongList;
 import com.fegin.service.UserClientService;
 import com.userservice.resultUtils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,11 +27,18 @@ public class MenuController {
 
     @GetMapping("/songList")
     R<List<SongList>> FindAllSongList(){
-        return R.success(service.FindAllSongList(),"歌当列表");
+        return R.success(service.FindAllSongList(),"歌单列表");
     }
 
+    @GetMapping("/SongBySingerId/{id}")
+    R<List<Song>> SongBySingerId(@PathVariable Integer id){
+        return R.success(service.SongBySingerId(id),"歌手作品");
+    }
 
-
+    @GetMapping("/SongBySongListId/{id}")
+    R<List<Song>> SongBySongListId(@PathVariable Integer id, @RequestParam("name") String name){
+        return R.success(service.SongBySongListId(id,name),"歌单作品");
+    }
 
 
 

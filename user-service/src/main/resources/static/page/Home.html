@@ -20,13 +20,53 @@
             <ul class="play-body">
                 <li class="card" v-for="(item,index) in pageList[index].list" :key="index">
                     <div @click="goAlbum(item,item.name)">
-                            <el-image class="card-img" fit="contain" :src="picUrl+item.pic" ></el-image>
+                            <el-image class="card-img" fit="contain" :src="picUrl+item.pic" lazy></el-image>
                     </div>
                     <p class="card-name">{{ item.name || item.title }}</p>
                 </li>
             </ul>
         </div>
-        <el-dialog title="歌手" :visible.sync="centerDialogVisible">
+
+        <el-drawer :visible.sync="DialogVisible" direction="rtl" size="50%">
+            <div>
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="card-content">
+                        <div class="card-left">
+                            <el-image style="width: 80px;height: 80px" fit="contain" :src="imageUrl" ></el-image>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-num">{{SingerName}}</div>
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+            <div>
+            <el-input type="textarea" v-model="Introduction" :autosize="{ minRows: 3, maxRows: 10}" readonly="true"></el-input>
+            </div>
+            <div>
+                <el-input placeholder="搜索歌单音乐" v-model="SearchName"  style="width: 200px;" class="filter-item" clearable></el-input>
+                <el-button @click="getSongBySongListId()"  icon="el-icon-search" plain>查询</el-button>
+            </div>
+            <div>
+                <el-table current-row-key="id" :data="dataList"  @row-click="handleClick" :row-class-name="tableRow" stripe highlight-current-row  border>
+                    <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
+                    <el-table-column prop="name" label="歌曲名" align="center" >
+                        <template slot-scope="scope">
+                            <div>{{ replaceLName(scope.row.name) }}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="歌手" align="center" >
+                        <template slot-scope="scope">
+                            <div>{{ replaceFName(scope.row.name) }}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="album" label="专辑" align="center"></el-table-column>
+                    <el-table-column prop="time" label="时长" align="center"></el-table-column>
+                </el-table>
+            </div>
+        </el-drawer>
+
+        <el-drawer :visible.sync="table" direction="rtl" size="50%">
             <div>
                 <el-card shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="card-content">
@@ -50,14 +90,11 @@
                             <div>{{ replaceLName(scope.row.name) }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="introduction" label="专辑" align="center"/>
+                    <el-table-column prop="album" label="专辑" align="center"></el-table-column>
+                    <el-table-column prop="time" label="时长" align="center"></el-table-column>
                 </el-table>
             </div>
-
-        </el-dialog>
-        <el-dialog title="歌单" :visible.sync="DialogVisible">
-
-        </el-dialog>
+        </el-drawer>
     </template>
 
 
@@ -75,7 +112,6 @@
         el: '#app',
         data:{
             dataList: [],
-            isPlay: false,
             picUrl:'http://localhost:8081',
             imageUrl: '', //歌手头像
             pic: '', //歌曲图片
@@ -91,23 +127,25 @@
                 {name:"歌单",list:[]},
                 {name:"歌手",list:[]},
             ],
+            SearchName: '',  //搜索词
+            SongListID: '',  //歌单ID
             SingerName: '',  //歌手姓名
             Introduction: '',//歌手简介
             musicUrl:'',    //歌曲路径
             title: '',     //歌名
             artist: '',     //歌手名
             listIndex: 0,     //歌单中的位置
-            templist: {}, //单个歌单信息或歌手信息
-            centerDialogVisible: false,
             DialogVisible: false,
+            table: false,
             theControlList: {},
         },
         created(){
+
+        },
+        mounted(){
             this.getSingerList();
             this.getSongList();
-            this.setControlList();
         },
-        mounted(){},
         methods:{
             handleCommand(command) {
                 this.musicUrl=command.url;
@@ -130,19 +168,30 @@
             },
             //跳转歌单歌手页面
             goAlbum(item,type){
-                if(type !=null){
-                    this.SingerName=type;
+                if(type != null){
+                    this.SingerName = type;
                     this.Introduction = item.introduction;
                     this.imageUrl = this.picUrl+item.pic;
                     this.getSongById(item.id);
-                    this.centerDialogVisible=true;
+                    this.table = true;
                 }else {
+                    this.SongListID = item.id;
+                    this.SingerName = item.title;
+                    this.Introduction = item.introduction;
+                    this.imageUrl = this.picUrl+item.pic;
+                    this.getSongBySongListId(item.id);
                     this.DialogVisible=true;
                 }
 
             },
             getSongById(id){
-                axios.get("/songs/SongById/"+id).then((res)=>{
+                axios.get("/menu/SongBySingerId/"+id).then((res)=>{
+                    this.dataList=res.data.data;
+                })
+            },
+            getSongBySongListId(){
+                param = "?name="+this.SearchName;
+                axios.get("/menu/SongBySongListId/"+this.SongListID+param).then((res)=>{
                     this.dataList=res.data.data;
                 })
             },
@@ -165,14 +214,7 @@
                 this.listIndex = row.index;
             },
 
-            setControlList () {
-                let controlList = this.theControlList.split(' ')
-                controlList.forEach((item) => {
-                    if(this.controlList[item] !== undefined){
-                        this.controlList[item] = true
-                    }
-                })
-            },
+
         },
 
 

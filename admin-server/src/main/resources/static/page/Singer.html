@@ -37,7 +37,7 @@
 <div id="app">
     <div>
         <div class="filter-container">
-            <el-input placeholder="筛选歌手/组合" v-model="pagination.name" style="width: 200px;" class="filter-item" clearable>></el-input>
+            <el-input placeholder="筛选歌手/组合" v-model="pagination.name" style="width: 200px;" class="filter-item" clearable></el-input>
             <template>
                 <el-select v-model="pagination.sex" clearable placeholder="请选择">
                     <el-option
@@ -145,14 +145,13 @@
             <!--分页组件-->
             <div class="pagination-container" style="text-align: center">
                 <el-pagination
-                        background
-                        class="SongPagination"
-                        @current-change="handleSongChange"
-                        :current-page="SongPagination.currentPage"
-                        :page-size="SongPagination.pageSize"
-                        layout="total, prev, pager, next, jumper"
-                        :total="SongPagination.total">
-                </el-pagination>
+                            background
+                            @current-change="handleSongChange"
+                            :current-page="SongPagination.currentPage"
+                            :page-size="SongPagination.pageSize"
+                            layout="total, prev, pager, next, jumper"
+                            :total="SongPagination.total">
+                    </el-pagination>
             </div>
 
 
