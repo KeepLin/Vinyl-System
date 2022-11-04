@@ -116,7 +116,7 @@
         <el-dialog title="歌曲管理" :visible.sync="SongDialogVisible">
             <div class="filter-container">
                 <el-button type="danger" class="butT" @click="deleteAll()" icon="el-icon-delete" plain>批量删除</el-button>
-                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;margin-left: 50%" class="filter-item" clearable></el-input>
+                <el-input placeholder="筛选歌曲" v-model="SongPagination.name" style="width: 200px;" class="filter-item" clearable></el-input>
                 <el-button @click="getSongBySingID()" class="dalfBut" icon="el-icon-search" plain>搜索</el-button>
                 <el-button type="primary" class="butT" @click="SongCreate()" icon="el-icon-circle-plus" plain>添加歌曲</el-button>
             </div>

@@ -24,6 +24,17 @@
                 <el-input v-model="keywords" placeholder="搜索音乐" @key.enter="goSearch" clearable></el-input>
                 <el-button type="primary"  @click="goSearch()">搜索</el-button>
             </el-menu-item>
+            <el-menu-item style="margin-left: 45%;">
+                    <el-image
+                            style="width: 50px; height: 50px"
+                            :src="picUrl"
+                            :fit="fit"
+                            @click="logout">
+                    </el-image>
+            </el-menu-item>
+            <el-menu-item>
+                {{ userInfo.username }}
+            </el-menu-item>
         </el-menu>
     </div>
 
@@ -53,10 +64,14 @@
         el: '#app',
         data(){
             return{
+                picUrl:'http://localhost:8081/image/user.jpg',
                 activeIndex: '1',
                 menuActived: '1',
+                userInfo: {
+                    username:''
+                },
                 searchPage:{
-                    id: 5,
+                    id: 6,
                     name: '搜索页面',
                     url: 'Search.html',
                 },
@@ -81,6 +96,11 @@
                         name: '我的音乐',
                         url: 'MyMusic.html',
                     },
+                    {
+                        id: '5',
+                        name: '购物车',
+                        url: 'Shop.html',
+                    },
                 ],
                 iframeUrl: 'Home.html',
                 headTitle: '首页',
@@ -96,6 +116,10 @@
             clearTimeout(this.timer)
         },
         created(){
+            const userInfo = window.localStorage.getItem('userInfo')
+            if (userInfo) {
+                this.userInfo = JSON.parse(userInfo)
+            }
             this.closeLoading()
         },
         mounted(){
@@ -103,6 +127,17 @@
         methods:{
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
+            },
+            logout() {
+                axios({
+                    method:'get',
+                    url:'/consumer/logout'
+                }).then((res)=>{
+                    if(res.data.code === 1){
+                        localStorage.removeItem('userInfo')
+                        window.location.href = 'Login.html'
+                    }
+                })
             },
             goBack() {
                 const menu = this.menuList.find(item=>item.id===this.menuActived)

@@ -47,7 +47,7 @@ public class ConsumerController {
     //用户登出
     @GetMapping("/logout")
     public R<String> logout(HttpServletRequest request){
-        request.getSession().removeAttribute("name");
+        request.getSession().removeAttribute("username");
         return R.success("退出成功");
     }
 

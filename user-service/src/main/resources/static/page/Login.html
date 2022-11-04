@@ -19,9 +19,9 @@
            </el-form-item>
            <el-form-item>
                <el-button-group >
-                   <el-button type="primary" icon="el-icon-s-promotion" @click="handleLogin" >登录</el-button>
-                   <el-button type="info" icon="el-icon-edit-outline" @click="handleAdd" >注册</el-button>
-                   <el-button type="success" icon="el-icon-thumb" @click="handleUpdate" >忘记密码</el-button>
+                   <el-button type="primary"  @click="handleLogin" >登录</el-button>
+                   <el-button type="info"  @click="handleAdd" >注册</el-button>
+                   <el-button type="success"  @click="handleUpdate" >忘记密码</el-button>
                </el-button-group>
            </el-form-item>
        </el-form>
@@ -91,6 +91,7 @@
             }
         },
         methods :{
+
             handleLogin(){
                 axios({
                     method: 'post',
@@ -100,7 +101,7 @@
                     if(String(res.data.code)==='1'){
                         localStorage.setItem('userInfo',JSON.stringify(res.data.data))
                         this.$message.success(res.data.msg);
-                        // window.location.href = 'Home.html'
+                        window.location.href = 'Menu.html'
                     }else {
                         this.$message.error(res.data.msg);
                     }

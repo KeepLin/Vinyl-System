@@ -28,7 +28,7 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
         Consumer user = new Consumer();
         user = baseMapper.selectOne(queryWrapper);
         if(user != null){
-            request.getSession().setAttribute("name",user.getUsername());
+            request.getSession().setAttribute("username",user.getUsername());
             return R.success(user,"欢迎回来");
         }else {
             return R.error("用户名或密码错误");
