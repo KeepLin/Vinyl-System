@@ -12,11 +12,11 @@ import java.util.List;
 
 @FeignClient(value = "adminservice")
 public interface UserClientService {
-    @GetMapping("/singer/allSinger")
-    List<Singer> FindAllSinger();
+    @GetMapping("/singer/SingerBySex")
+    List<Singer> FindAllSinger(@RequestParam ("sex") Integer sex);
 
-    @GetMapping("/SongMenu/allSongList")
-    List<SongList> FindAllSongList();
+    @GetMapping("/SongMenu/SongListByStyle")
+    List<SongList> FindAllSongList(@RequestParam ("style") String style);
 
     @GetMapping("/song/SongBySingerId/{id}")
     List<Song> SongBySingerId(@PathVariable Integer id);

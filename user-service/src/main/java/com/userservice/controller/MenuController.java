@@ -21,13 +21,13 @@ public class MenuController {
     private UserClientService service;
 
     @GetMapping("/singer")
-    R<List<Singer>> FindAllSinger(){
-        return R.success(service.FindAllSinger(),"歌手列表");
+    R<List<Singer>> FindAllSinger(@RequestParam ("sex") Integer sex){
+        return R.success(service.FindAllSinger(sex),"歌手列表");
     }
 
     @GetMapping("/songList")
-    R<List<SongList>> FindAllSongList(){
-        return R.success(service.FindAllSongList(),"歌单列表");
+    R<List<SongList>> FindAllSongList(@RequestParam ("style") String style){
+        return R.success(service.FindAllSongList(style),"歌单列表");
     }
 
     @GetMapping("/SongBySingerId/{id}")

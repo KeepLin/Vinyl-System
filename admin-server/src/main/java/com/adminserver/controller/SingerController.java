@@ -121,10 +121,16 @@ public class SingerController {
         return singerService.updateSingerPic(multipartFile,id);
     }
 
-    @GetMapping("/allSinger")
-    public List<Singer> AllSinger(){
+    @GetMapping("/SingerBySex")
+    public List<Singer> AllSinger(@RequestParam ("sex") Integer sex){
         QueryWrapper<Singer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.last("limit 10");
+        if (sex == 6){
+            queryWrapper.last("limit 10");
+        }else if (sex == 5){
+            queryWrapper.clear();
+        }else {
+            queryWrapper.eq("sex",sex);
+        }
         return singerService.list(queryWrapper);
     }
 

@@ -103,10 +103,17 @@ public class SongListController {
         }
     }
 
-    @GetMapping("/allSongList")
-    public List<SongList> AllSongList(){
+    //获取指定风格歌单前十的数据
+    @GetMapping("/SongListByStyle")
+    public List<SongList> AllSongList(@RequestParam ("style") String style){
         QueryWrapper<SongList> queryWrapper = new QueryWrapper<>();
-        queryWrapper.last("limit 10");
+        if(style != null && style.length()>0){
+            queryWrapper.eq("style",style);
+        }else {
+            queryWrapper.last("limit 10");
+        }
         return service.list(queryWrapper);
     }
+
+
 }

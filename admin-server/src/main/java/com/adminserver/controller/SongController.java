@@ -126,7 +126,12 @@ public class SongController {
 
     @GetMapping("/SongBySongListId/{id}")
     public List<Song> SongBySongListId(@PathVariable Integer id,@RequestParam("name") String name){
-        return songService.selectBySongListId(id,name);
+        if(name != null && name.length()>0) {
+            return songService.selectBySongListId(id,name);
+        }else {
+            return songService.selectBySongListId(id,null);
+        }
+
     }
 
 
