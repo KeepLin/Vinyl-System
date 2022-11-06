@@ -2,31 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>歌单</title>
+    <title>搜索歌手</title>
     <link rel="stylesheet" type="text/css" href="../plugins/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
-<div id="app">
+<div id="search-singer">
     <template>
-        <div>
-            <el-tabs v-model="Style" @tab-click="handleClick">
-                <el-tab-pane label="华语" name="华语"></el-tab-pane>
-                <el-tab-pane label="粤语" name="粤语"></el-tab-pane>
-                <el-tab-pane label="欧美" name="欧美"></el-tab-pane>
-                <el-tab-pane label="日韩" name="日韩"></el-tab-pane>
-                <el-tab-pane label="BGM" name="BGM"></el-tab-pane>
-                <el-tab-pane label="轻音乐" name="轻音乐"></el-tab-pane>
-                <el-tab-pane label="乐器" name="乐器"></el-tab-pane>
-            </el-tabs>
-        </div>
         <div class="play-list" v-for="(item,index) in pageList" :key="index">
-            <div class="play-title">{{Style}}</div>
             <ul class="play-body">
                 <li class="card" v-for="(item,index) in pageList[index].list" :key="index">
-                    <div @click="goAlbum(item)">
-                        <el-image class="card-img" fit="contain" :src="picUrl+item.pic" lazy></el-image>
+                    <div @click="goAlbum(item,item.name)">
+                        <el-image class="card-img" fit="contain" :src="picUrl+item.pic"></el-image>
                     </div>
-                    <p class="card-name">{{ item.title }}</p>
+                    <p class="card-name">{{ item.name }}</p>
                 </li>
             </ul>
         </div>
@@ -38,17 +26,13 @@
                             <el-image style="width: 80px;height: 80px" fit="contain" :src="imageUrl" ></el-image>
                         </div>
                         <div class="card-right">
-                            <div class="card-num">{{title}}</div>
+                            <div class="card-num">{{SingerName}}</div>
                         </div>
                     </div>
                 </el-card>
             </div>
             <div>
-                <el-input type="textarea" v-model="Introduction" :autosize="{ minRows: 3, maxRows: 10}" readonly="true"></el-input>
-            </div>
-            <div>
-                <el-input placeholder="搜索歌单音乐" v-model="SearchName"  style="width: 200px;" class="filter-item" clearable></el-input>
-                <el-button @click="getSongBySongListId()"  icon="el-icon-search" plain>查询</el-button>
+                <el-input type="textarea" v-model="Introduction"  readonly="true" :autosize="{ minRows: 2, maxRows: 6}"></el-input>
             </div>
             <div>
                 <el-table current-row-key="id" :data="dataList"  @row-click="handleClick" :row-class-name="tableRow" stripe highlight-current-row  border>
@@ -58,20 +42,13 @@
                             <div>{{ replaceLName(scope.row.name) }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="歌手" align="center" >
-                        <template slot-scope="scope">
-                            <div>{{ replaceFName(scope.row.name) }}</div>
-                        </template>
-                    </el-table-column>
                     <el-table-column prop="album" label="专辑" align="center"></el-table-column>
                     <el-table-column prop="time" label="时长" align="center"></el-table-column>
                 </el-table>
             </div>
         </el-drawer>
     </template>
-
 </div>
-
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../plugins/vue/vue.js"></script>
 <!-- 引入组件库 -->
@@ -80,52 +57,42 @@
 <script src="../plugins/axios/axios.min.js"></script>
 <script>
     new Vue({
-        el: '#app',
+        el: '#search-singer',
         data:{
-            table: false,
-            Style: '华语',
-            SearchName: '', //搜索词
-            SongListID: '',  //歌单ID
-            title: '',     //歌单标题
-            imageUrl: '', //歌单头像
-            Introduction: '',//歌单简介
+            SearchName: '',
+            SingerName: '',
+            Introduction: '',
             dataList: [],
             picUrl:'http://localhost:8081',
+            imageUrl: '',
+            table: false,
             pageList:[
-                {name:"歌单",list:[]}
+                {name:"歌手",list:[]}
             ],
         },
         created(){
-
+            this.SearchName = window.localStorage.getItem("SearchName");
         },
         mounted(){
-            this.getSongList();
+            this.getSongBySinger();
         },
         methods:{
-            //歌单风格切换
-            handleClick(tab){
-                this.Style = tab.name;
-                this.getSongList();
-            },
-            //跳转歌单歌手页面
-            goAlbum(item){
-                this.SongListID = item.id;
-                this.title = item.title;
-                this.Introduction = item.introduction;
-                this.imageUrl = this.picUrl+item.pic;
-                this.getSongBySongListId(item.id);
-                this.table=true;
-            },
-            //获取歌单
-            getSongList(){
-                param = "?style="+this.Style;
-                axios.get("/menu/songList"+param).then((res)=>{
+            getSongBySinger(){
+                param = "?name="+this.SearchName;
+                axios.get("/menu/SongBySinger"+param).then((res)=>{
                     this.pageList[0].list=res.data.data;
                 })
             },
-            getSongBySongListId(){
-                param = "?name="+this.SearchName;
-                axios.get("/menu/SongBySongListId/"+this.SongListID+param).then((res)=>{
+            //跳转歌单歌手页面
+            goAlbum(item,type){
+                this.SingerName = type;
+                this.Introduction = item.introduction;
+                this.imageUrl = this.picUrl+item.pic;
+                this.getSongById(item.id);
+                this.table = true;
+            },
+            getSongById(id){
+                axios.get("/menu/SongBySingerId/"+id).then((res)=>{
                     this.dataList=res.data.data;
                 })
             },
@@ -136,10 +103,12 @@
             replaceLName(str){
                 let arr = str.split('-');
                 return arr[1]
-            },
+            }
+
         }
     })
 </script>
+
 <style scoped>
     .swiper-container {
         width: 90%;
@@ -223,38 +192,7 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
-    .slider {
-        width: 100px;
-        margin-top: 10px;
-        text-align: center;
-    }
-    .slider_time{
-        width: 550px;
-        margin: 0 10px;
-    }
-    .slider_voice{
-        width: 100px;
-        margin-top: 5px;
-    }
-    .download {
-        color: #409EFF;
-        margin-left: 15px;
-        width: 100px;
-        text-align: center;
-        margin-top: 10px;
-    }
-    .dn{
-        display: none;
-    }
-    .Title{
-        margin-right: 30px;
-        margin-left: 30px;
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        color: #DD4A68;
-        height: 50px;
-    }
+
 </style>
 </body>
 </html>

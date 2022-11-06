@@ -1,5 +1,6 @@
 package com.adminserver.controller;
 
+import com.adminserver.pojo.Song;
 import com.adminserver.pojo.SongList;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongListService;
@@ -115,5 +116,10 @@ public class SongListController {
         return service.list(queryWrapper);
     }
 
+    //模糊查询歌单
+    @GetMapping("/SearchByTitle")
+    public List<SongList> SearchByTitle(@RequestParam ("title") String title){
+        return service.SearchByTitle(title);
+    }
 
 }

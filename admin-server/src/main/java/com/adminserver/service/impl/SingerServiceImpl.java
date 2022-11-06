@@ -138,4 +138,12 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
         return flag;
     }
 
+    //模糊查询歌手
+    @Override
+    public List<Singer> SearchBySinger(String name) {
+        QueryWrapper<Singer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name",name);
+        return baseMapper.selectList(queryWrapper);
+    }
+
 }

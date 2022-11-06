@@ -40,6 +40,23 @@ public class MenuController {
         return R.success(service.SongBySongListId(id,name),"歌单作品");
     }
 
+    @GetMapping("/SongByName")
+    R<List<Song>> SongBySearch(@RequestParam("name") String name){
+        return R.success(service.SearchName(name),"查询歌曲成功");
+    }
+
+    @GetMapping("/SongBySinger")
+    R<List<Singer>> SongBySingerName(@RequestParam("name") String name) {
+        return R.success(service.SearchBySinger(name),"查询歌手成功");
+    }
+
+    @GetMapping("/SongByTitle")
+    R<List<SongList>> SongByTitle(@RequestParam("title") String title){
+        return R.success(service.SearchByTitle(title),"查询歌单");
+    }
+
+
+
 
 
 }

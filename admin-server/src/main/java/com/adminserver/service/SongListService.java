@@ -20,4 +20,7 @@ public interface SongListService extends IService<SongList> {
 
     //统计歌单风格
     List<Integer> countStyle();
+
+    //模糊查询歌单
+    List<SongList> SearchByTitle(String title);
 }

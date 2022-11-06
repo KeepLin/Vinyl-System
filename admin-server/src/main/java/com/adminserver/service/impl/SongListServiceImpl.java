@@ -116,4 +116,12 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
 
         return integerList;
     }
+
+    //模糊查询歌单
+    @Override
+    public List<SongList> SearchByTitle(String title) {
+        QueryWrapper<SongList> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("title",title);
+        return baseMapper.selectList(queryWrapper);
+    }
 }

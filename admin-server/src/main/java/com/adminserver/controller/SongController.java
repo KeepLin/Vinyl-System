@@ -106,7 +106,12 @@ public class SongController {
         }else {
             return R.error("系统暂无符合条件的歌曲");
         }
+    }
 
+    //提供用户使用查询歌曲
+    @GetMapping("/Search")
+    public List<Song> SearchName(@RequestParam("name") String name){
+        return songService.SearchByName(name);
     }
     //根据歌手id查找歌曲
     @GetMapping("/SongById/{singerId}")
@@ -119,11 +124,13 @@ public class SongController {
         }
     }
 
+    //返回歌手的作品
     @GetMapping("/SongBySingerId/{id}")
     public List<Song> SongBySingerId(@PathVariable Integer id){
         return songService.SearchById(id);
     }
 
+    //搜索歌单中的曲库
     @GetMapping("/SongBySongListId/{id}")
     public List<Song> SongBySongListId(@PathVariable Integer id,@RequestParam("name") String name){
         if(name != null && name.length()>0) {

@@ -134,4 +134,9 @@ public class SingerController {
         return singerService.list(queryWrapper);
     }
 
+    @GetMapping("/SearchBySinger")
+    public List<Singer> SearchByName(@RequestParam ("name") String name){
+        return singerService.SearchBySinger(name);
+    }
+
 }

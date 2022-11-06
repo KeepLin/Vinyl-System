@@ -28,6 +28,9 @@ public interface SingerService extends IService<Singer> {
     //统计歌手国籍
     List<Integer> countCountry();
 
-    // 添加歌手
+    //添加歌手
     Boolean AddSinger(Singer addSingerRequest);
+
+    //模糊查询歌手
+    List<Singer> SearchBySinger(String name);
 }

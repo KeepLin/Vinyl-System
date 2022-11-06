@@ -24,4 +24,12 @@ public interface UserClientService {
     @GetMapping("/song/SongBySongListId/{id}")
     List<Song> SongBySongListId(@PathVariable Integer id,@RequestParam("name") String name);
 
+    @GetMapping("/song/Search")
+    List<Song> SearchName(@RequestParam("name") String name);
+
+    @GetMapping("/singer/SearchBySinger")
+    List<Singer> SearchBySinger(@RequestParam("name") String name);
+
+    @GetMapping("/SongMenu/SearchByTitle")
+    List<SongList> SearchByTitle(@RequestParam("title") String title);
 }

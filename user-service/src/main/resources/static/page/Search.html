@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="search-app">
+    <div class="search">
+        <nav class="search-list">
+            <span class="textSize" style="margin-right: 300px;" @click="ChangeSongPage()">歌曲</span>
+            <span class="textSize" @click="ChangeSingerPage()">歌手</span>
+            <span class="textSize" style="margin-left: 300px;" @click="ChangeListPage()">歌单</span>
+        </nav>
+    </div>
+    <div  v-loading="loading">
+        <div  v-show="loading"></div>
+        <iframe
+                id="cIframe"
+                name="cIframe"
+                :src="iframeUrl"
+                width="100%"
+                height="700px"
+                frameborder="0"
+                v-show="!loading"
+        ></iframe>
+    </div>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/lib/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#search-app',
+        data:{
+            activeIndex: '1',
+            menuActived: '1',
+            SongPage:{
+                id: 1,
+                name: '搜索歌曲',
+                url: 'SearchSong.html',
+            },
+            SongListPage:{
+                id: 2,
+                name: '搜索歌单',
+                url: 'SearchSongList.html',
+            },
+            SingerPage:{
+                id: 3,
+                name: '搜索歌手',
+                url: 'SearchSinger.html',
+            },
+            iframeUrl: 'SearchSong.html',
+            headTitle: '歌手',
+            goBackFlag: false,
+            loading: true,
+            timer: null,
+        },
+        beforeDestroy() {
+            this.timer = null
+            clearTimeout(this.timer)
+        },
+        created(){
+            this.closeLoading()
+        },
+        methods:{
+            goBack() {
+                const menu = this.menuList.find(item=>item.id===this.menuActived)
+                this.menuHandle(menu,false)
+            },
+            menuHandle(item, goBackFlag) {
+                this.loading = true
+                this.menuActived = item.id
+                this.iframeUrl = item.url
+                this.headTitle = item.name
+                this.goBackFlag = goBackFlag
+                this.closeLoading()
+            },
+            closeLoading(){
+                this.timer = null
+                this.timer = setTimeout(()=>{
+                    this.loading = false
+                },1000)
+            },
+            ChangeSongPage(){
+                this.menuHandle(this.SongPage,false);
+            },
+            ChangeListPage(){
+                this.menuHandle(this.SongListPage,false);
+            },
+            ChangeSingerPage(){
+                this.menuHandle(this.SingerPage,false);
+            }
+        }
+    })
+
+</script>
+<style scoped>
+    .search {
+        margin: auto;
+        width: 1280px;
+    }
+
+    .search-list {
+        min-height: 80px;
+        display:block;
+        text-align: center;
+    }
+    .textSize{
+        font-size: 30px;
+        font-weight: bold;
+    }
+</style>
+</body>
+</html>

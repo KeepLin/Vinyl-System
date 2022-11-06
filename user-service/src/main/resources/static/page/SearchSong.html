@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索歌曲</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="SearchSong">
+    <template>
+        <div class="content">
+            <el-table current-row-key="id" :data="dataList"  stripe highlight-current-row  border>
+                <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
+                <el-table-column prop="name" label="歌曲名" align="center" >
+                    <template slot-scope="scope">
+                        <div>{{ replaceLName(scope.row.name) }}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="歌手" align="center">
+                    <template slot-scope="scope">
+                        <div>{{ replaceFName(scope.row.name) }}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="album" label="专辑" align="center"></el-table-column>
+                <el-table-column prop="time" label="时长" align="center"></el-table-column>
+            </el-table>
+        </div>
+    </template>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../plugins/element-ui/lib/index.js"></script>
+<!-- 引入axios -->
+<script src="../plugins/axios/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#SearchSong',
+        data:{
+            SearchName:'',
+            dataList: [],
+        },
+        created(){
+           this.SearchName = window.localStorage.getItem("SearchName");
+        },
+        mounted(){
+            this.getSongByName();
+        },
+        methods:{
+            getSongByName(){
+                param = "?name=" + this.SearchName;
+                axios.get("/menu/SongByName/"+param).then((res)=>{
+                    if(String(res.data.code) === '1'){
+                        this.dataList=res.data.data;
+                    }else {
+                        this.notify(res.data.msg,'warning');
+                    }
+                })
+            },
+            replaceFName(str){
+                let arr = str.split('-');
+                return arr[0]
+            },
+            replaceLName(str){
+                let arr = str.split('-');
+                return arr[1]
+            },
+        }
+
+    })
+</script>
+<style scoped>
+    .swiper-container {
+        width: 90%;
+        margin: auto;
+        padding-top: 20px;
+    }
+    .swiper-container img{
+        width: 100%;
+    }
+</style>
+</body>
+</html>
