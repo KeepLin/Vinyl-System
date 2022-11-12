@@ -145,4 +145,20 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
         return baseMapper.selectList(queryWrapper);
     }
 
+    @Override
+    public R<String> deleteSinger(Integer id) {
+        Singer singer = baseMapper.selectById(id);
+        String imageUrl = "E:/static" +singer.getPic();
+
+        File imageFile = new File(imageUrl);
+        if (imageFile.isFile()&&imageFile.exists()){
+            imageFile.delete();
+        }
+        if (baseMapper.deleteById(id)>0){
+            return R.success("歌手删除成功");
+        }else {
+            return R.error("歌手删除失败");
+        }
+    }
+
 }

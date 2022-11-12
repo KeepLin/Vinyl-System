@@ -1,6 +1,6 @@
 package com.adminserver.controller;
 
-import com.adminserver.pojo.Song;
+
 import com.adminserver.pojo.SongList;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SongListService;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.util.List;
@@ -90,18 +89,8 @@ public class SongListController {
 
     //删除歌单
     @DeleteMapping("/{id}")
-    public R<String> delete(@PathVariable Integer id) throws FileNotFoundException {
-        SongList temp = service.getById(id);
-        String imageUrl = System.getProperty("user.dir")+temp.getPic();
-        File imageFile = new File(imageUrl);
-        if (imageFile.isFile()&&imageFile.exists()){
-            imageFile.delete();
-        }
-        if (service.removeById(id)){
-            return R.success("歌单删除成功");
-        }else {
-            return R.error("歌单删除失败");
-        }
+    public R<String> deleteSongList(@PathVariable Integer id){
+        return service.deleteSongList(id);
     }
 
     //获取指定风格歌单前十的数据

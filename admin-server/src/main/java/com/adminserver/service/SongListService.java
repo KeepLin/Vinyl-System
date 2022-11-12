@@ -23,4 +23,7 @@ public interface SongListService extends IService<SongList> {
 
     //模糊查询歌单
     List<SongList> SearchByTitle(String title);
+
+    //删除歌单信息及图片
+    R<String> deleteSongList(Integer id);
 }

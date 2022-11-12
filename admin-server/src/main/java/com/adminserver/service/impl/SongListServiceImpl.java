@@ -122,4 +122,20 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
         queryWrapper.like("title",title);
         return baseMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public R<String> deleteSongList(Integer id) {
+        SongList temp = baseMapper.selectById(id);
+        String imageUrl = "E:/static"+temp.getPic();
+        File imageFile = new File(imageUrl);
+        if (imageFile.isFile()&&imageFile.exists()){
+            imageFile.delete();
+        }
+        if (baseMapper.deleteById(id)>0){
+            return R.success("歌单删除成功");
+        }else {
+            return R.error("歌单删除失败");
+        }
+
+    }
 }

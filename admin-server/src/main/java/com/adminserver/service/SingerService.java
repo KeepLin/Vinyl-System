@@ -33,4 +33,7 @@ public interface SingerService extends IService<Singer> {
 
     //模糊查询歌手
     List<Singer> SearchBySinger(String name);
+
+    //删除歌手信息及图片
+    R<String> deleteSinger(Integer id);
 }

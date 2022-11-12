@@ -61,18 +61,7 @@ public class SingerController {
     // 删除歌手
     @DeleteMapping("/{id}")
     public R<String> delete(@PathVariable Integer id) throws FileNotFoundException {
-        Singer singer = singerService.getById(id);
-        String imageUrl = System.getProperty("user.dir") +singer.getPic();
-
-        File imageFile = new File(imageUrl);
-        if (imageFile.isFile()&&imageFile.exists()){
-            imageFile.delete();
-        }
-        if (singerService.removeById(id)){
-            return R.success("歌手删除成功");
-        }else {
-            return R.error("歌手删除失败");
-        }
+        return singerService.deleteSinger(id);
     }
 
     //编辑歌手查找
@@ -107,8 +96,7 @@ public class SingerController {
     public R<String> updateSingerMsg(@RequestBody Singer updateSingerRequest) {
         Singer singer = new Singer();
         BeanUtils.copyProperties(updateSingerRequest, singer);
-        boolean flag = singerService.updateById(singer);
-        if (flag){
+        if (singerService.updateById(singer)){
             return R.success("歌手信息更新成功");
         }else {
             return R.error("歌手信息更新失败");
