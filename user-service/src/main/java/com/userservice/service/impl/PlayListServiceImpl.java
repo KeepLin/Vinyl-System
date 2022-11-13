@@ -83,9 +83,8 @@ public class PlayListServiceImpl extends ServiceImpl<PlayListMapper, PlayList> i
 
     @Override
     public R<String> addPlayList(PlayList playList) {
-        String pic = "/img/playListPic/";
-        String[] split = playList.getPic().split("\\\\");
-        playList.setPic(pic+split[2]);
+        String pic = "/img/playListPic/tubiao.jpg";
+        playList.setPic(pic);
         if (playListMapper.insert(playList)>0){
             return R.success("定制歌单创建成功");
         }else {
