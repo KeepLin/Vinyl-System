@@ -8,7 +8,6 @@ import com.userservice.resultUtils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -54,6 +53,12 @@ public class MenuController {
     R<List<SongList>> SongByTitle(@RequestParam("title") String title){
         return R.success(service.SearchByTitle(title),"查询歌单");
     }
+
+    @GetMapping("/SongByPid/{pid}")
+    R<List<Song>> SongByStamp(@PathVariable Integer pid){
+        return R.success(service.SongByStampPid(pid),"客户歌单");
+    }
+
 
 
 

@@ -138,7 +138,12 @@ public class SongController {
         }else {
             return songService.selectBySongListId(id,null);
         }
+    }
 
+    //索引客户歌单
+    @GetMapping("/SongByStamp/{pid}")
+    public List<Song> SongByStamp(@PathVariable Integer pid){
+        return songService.selectByStamp(pid);
     }
 
 

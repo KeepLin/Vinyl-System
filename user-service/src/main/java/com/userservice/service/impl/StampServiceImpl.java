@@ -28,4 +28,17 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
             }
         }
     }
+
+    @Override
+    public Boolean DeleteSong(Integer pid, Integer songId) {
+        return this.stampMapper.DeleteSong(pid,songId);
+    }
+
+    @Override
+    public R<String> DeleteList(Integer pid) {
+        QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pid",pid);
+        this.stampMapper.delete(queryWrapper);
+        return R.success("歌单删除成功");
+    }
 }

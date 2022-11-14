@@ -20,11 +20,7 @@ public class ListSongServiceImpl extends ServiceImpl<ListSongMapper, ListSong> i
         queryWrapper.select("id").eq("song_id",SongId).eq("song_list_id",SongListId);
 
         int delete = listSongMapper.delete(queryWrapper);
-        if (delete>0){
-            return true;
-        }else{
-            return false;
-        }
+        return delete > 0;
 
 
     }
@@ -37,11 +33,7 @@ public class ListSongServiceImpl extends ServiceImpl<ListSongMapper, ListSong> i
         if (count>0){
             return false;
         }else {
-            if ( save(temp)){
-                return true;
-            }else {
-                return false;
-            }
+            return save(temp);
         }
     }
 

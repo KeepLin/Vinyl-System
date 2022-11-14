@@ -48,16 +48,14 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     public List<Song> SearchByName(String name) {
         QueryWrapper<Song> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name",name);
-        List<Song> songList = list(queryWrapper);
-        return songList;
+        return list(queryWrapper);
     }
 
     @Override
     public List<Song> SearchById(Integer id) {
         QueryWrapper<Song> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("singer_id",id);
-        List<Song> songList = list(queryWrapper);
-        return songList;
+        return list(queryWrapper);
     }
 
     //统计歌曲数量
@@ -69,6 +67,11 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
     @Override
     public List<Song> selectBySongListId(Integer id, String name) {
         return this.baseMapper.selectBySongListId(id,name);
+    }
+
+    @Override
+    public List<Song> selectByStamp(Integer pid) {
+        return this.baseMapper.selectByStamp(pid);
     }
 
 

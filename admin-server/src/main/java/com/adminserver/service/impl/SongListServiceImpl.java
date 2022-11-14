@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -61,13 +60,13 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
         //图片存储路径
         String filePath ="E:/static/img/songListPic";
 
-        try {
-            File floder = new File(filePath);
-            if (!floder.exists()){
-                floder.mkdirs();
+        try{
+            File folder = new File(filePath);
+            if (!folder.exists()){
+                folder.mkdirs();
             }
             //将上传的图片保存到指定文件夹
-            multipartFile.transferTo(new File(floder,filename));
+            multipartFile.transferTo(new File(folder,filename));
         }catch (IOException e){
             e.printStackTrace();
             return R.error("保存失败");
@@ -110,9 +109,9 @@ public class SongListServiceImpl extends ServiceImpl<SongListMapper, SongList> i
         }
 
         Collection<Integer> collection = map.values();
-        List<Integer> integerList = new ArrayList<>(collection);
+        //List<Integer> integerList = new ArrayList<>(collection);
 
-        return integerList;
+        return new ArrayList<>(collection);
     }
 
     //模糊查询歌单

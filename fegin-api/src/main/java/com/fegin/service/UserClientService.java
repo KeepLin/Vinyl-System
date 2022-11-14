@@ -32,4 +32,7 @@ public interface UserClientService {
 
     @GetMapping("/SongMenu/SearchByTitle")
     List<SongList> SearchByTitle(@RequestParam("title") String title);
+
+    @GetMapping("/song/SongByStamp/{pid}")
+    List<Song> SongByStampPid(@PathVariable Integer pid);
 }

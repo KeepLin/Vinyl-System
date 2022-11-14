@@ -27,6 +27,7 @@ public interface SongMapper extends BaseMapper<Song> {
     List<Song> selectByPage(Page<Song> page, @Param("name") String name,@Param("singerid") Integer singerid);
 
 
+    //查询歌单的歌曲集合
     @Select("<script>"+
             "select s.* from song s"+
             "<where>"+
@@ -45,6 +46,7 @@ public interface SongMapper extends BaseMapper<Song> {
             "</script>")
     List<Song> selectBySongList(Page<Song> page, @Param("id") Integer id,@Param("name") String name);
 
+    //歌单中介表索引对应歌曲
     @Select("<script>"+
             "select s.* from song s"+
             "<where>"+
@@ -62,4 +64,18 @@ public interface SongMapper extends BaseMapper<Song> {
             "</where>"+
             "</script>")
     List<Song> selectBySongListId(@Param("id") Integer id,@Param("name") String name);
+
+    //索引客户的歌单歌曲
+    @Select("<script>"+
+            "select s.* from song s"+
+            "<where>"+
+            "s.id IN (select song_id from stamp " +
+            "<where>"+
+            "<if test='pid != null'>"+
+            "pid = #{pid}"+
+            "</if>"+
+            "</where>)"+
+            "</where>"+
+            "</script>")
+    List<Song> selectByStamp(@Param("pid") Integer pid);
 }
