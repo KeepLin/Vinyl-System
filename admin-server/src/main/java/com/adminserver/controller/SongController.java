@@ -114,7 +114,7 @@ public class SongController {
         return songService.SearchByName(name);
     }
     //根据歌手id查找歌曲
-    @GetMapping("/SongById/{singerId}")
+    @GetMapping("/SingerId/{singerId}")
     public R<List<Song>> SongByName(@PathVariable Integer singerId){
         List<Song> songList = songService.SearchById(singerId);
         if (songList!=null){
@@ -146,5 +146,14 @@ public class SongController {
         return songService.selectByStamp(pid);
     }
 
+    //删除歌手作品
+    @DeleteMapping("/SingerById/{singerId}")
+    public R<String> DeleteSongBySingerId(@PathVariable Integer singerId){
+        if(songService.DeleteSingerBySong(singerId)){
+            return R.success("删除歌手作品成功");
+        }else {
+            return R.error("删除歌手作品失败");
+        }
+    }
 
 }

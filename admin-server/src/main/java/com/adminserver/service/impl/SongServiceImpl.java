@@ -74,5 +74,13 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         return this.baseMapper.selectByStamp(pid);
     }
 
+    @Override
+    public Boolean DeleteSingerBySong(Integer singerId) {
+        QueryWrapper<Song> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("singer_id",singerId);
+        int delete = this.baseMapper.delete(queryWrapper);
+        return delete>0;
+    }
+
 
 }

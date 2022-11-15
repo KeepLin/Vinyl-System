@@ -34,4 +34,7 @@ public interface SongService extends IService<Song> {
 
     //索引客户歌单
     List<Song> selectByStamp(Integer pid);
+
+    //删除歌手数据并删除歌手的作品
+    Boolean DeleteSingerBySong(Integer singerId);
 }

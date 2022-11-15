@@ -32,4 +32,13 @@ public class ListSongController {
         }
     }
 
+    @DeleteMapping("/{SongListId}")
+    public R<String> deleteRecord(@PathVariable Integer SongListId){
+        if (listSongService.DeleteRecord(SongListId)){
+            return R.success("歌曲删除成功");
+        }else {
+            return R.error("歌曲删除失败");
+        }
+    }
+
 }

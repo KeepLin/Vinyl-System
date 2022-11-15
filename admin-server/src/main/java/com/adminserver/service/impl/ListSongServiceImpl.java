@@ -17,7 +17,7 @@ public class ListSongServiceImpl extends ServiceImpl<ListSongMapper, ListSong> i
     @Override
     public Boolean DeleteSong(Integer SongId, Integer SongListId) {
         QueryWrapper<ListSong> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("id").eq("song_id",SongId).eq("song_list_id",SongListId);
+        queryWrapper.select("id").eq("song_id", SongId).eq("song_list_id", SongListId);
 
         int delete = listSongMapper.delete(queryWrapper);
         return delete > 0;
@@ -28,14 +28,20 @@ public class ListSongServiceImpl extends ServiceImpl<ListSongMapper, ListSong> i
     @Override
     public Boolean AddSong(ListSong temp) {
         QueryWrapper<ListSong> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("song_id",temp.getSongId()).eq("song_list_id",temp.getSongListId());
+        queryWrapper.eq("song_id", temp.getSongId()).eq("song_list_id", temp.getSongListId());
         Integer count = listSongMapper.selectCount(queryWrapper);
-        if (count>0){
+        if (count > 0) {
             return false;
-        }else {
+        } else {
             return save(temp);
         }
     }
 
-
+    @Override
+    public Boolean DeleteRecord(Integer SongListId) {
+        QueryWrapper<ListSong> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("song_list_id", SongListId);
+        int delete = listSongMapper.delete(queryWrapper);
+        return delete > 0;
+    }
 }

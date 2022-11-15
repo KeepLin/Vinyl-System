@@ -43,6 +43,7 @@ public class PlayListController {
         return service.updatePlayListPic(multipartFile,pid);
     }
 
+    //删除定制歌单
     @DeleteMapping("/{pid}")
     public R<String> deletePlayList(@PathVariable Integer pid){
         return service.deletePlayList(pid);
