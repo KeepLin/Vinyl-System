@@ -17,7 +17,11 @@ public class StampController {
 
     @PostMapping
     public R<String> addStamp(@RequestBody Stamp stamp){
-        return stampService.AddStamp(stamp);
+        if (stampService.CountSong(stamp.getPid())){
+            return stampService.AddStamp(stamp);
+        }else {
+            return R.error("歌曲已到达最大数量，请适当修改歌单再添加歌曲");
+        }
     }
 
     @DeleteMapping("/{pid}/{songId}")

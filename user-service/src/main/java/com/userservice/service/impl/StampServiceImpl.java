@@ -41,4 +41,16 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
         this.stampMapper.delete(queryWrapper);
         return R.success("歌单删除成功");
     }
+
+    @Override
+    public Boolean CountSong(Integer pid) {
+        QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pid",pid);
+        if(this.stampMapper.selectCount(queryWrapper)<=12){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 }
