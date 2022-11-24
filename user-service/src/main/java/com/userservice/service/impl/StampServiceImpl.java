@@ -46,7 +46,7 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
     public Boolean CountSong(Integer pid) {
         QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("pid",pid);
-        if(this.stampMapper.selectCount(queryWrapper)<=12){
+        if(this.stampMapper.selectCount(queryWrapper)<12){
             return true;
         }else {
             return false;

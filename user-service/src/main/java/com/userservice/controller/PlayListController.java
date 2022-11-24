@@ -28,7 +28,7 @@ public class PlayListController {
 
     @GetMapping("/{pid}")
     public R<PlayList> getPlayListByid(@PathVariable Integer pid){
-        return R.success(service.getById(pid),"指定歌单信息");
+        return R.success(service.getById(pid),"获取指定歌单信息");
     }
 
     //添加歌单
