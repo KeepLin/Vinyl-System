@@ -17,5 +17,11 @@ public class Shop {
     private Integer Pid;
 
     @TableField(exist = false)
-    private PlayList playList;
+    private String title;
+
+    @TableField(exist = false)
+    private Integer score;
+
+    @TableField(exist = false)
+    private String pic;
 }
