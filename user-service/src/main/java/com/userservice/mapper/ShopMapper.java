@@ -17,7 +17,7 @@ public interface ShopMapper extends BaseMapper<Shop> {
             "<if test='Uid != null'>"+
             "s.Uid = #{Uid} "+
             "</if>"+
-            "and s.Uid = p.uid"+
+            "and s.Pid = p.pid"+
             "</where >"+
             "</script>")
     List<Shop> selectByPage(Page<Shop> page, @Param("Uid") Integer Uid);

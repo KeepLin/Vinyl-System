@@ -70,7 +70,7 @@ public class SongController {
         if(songService.AddSong(song)){
             return R.success("歌曲添加成功");
         }else {
-            return R.success("歌曲添加失败");
+            return R.error("歌曲添加失败");
         }
 
     }
@@ -113,6 +113,7 @@ public class SongController {
     public List<Song> SearchName(@RequestParam("name") String name){
         return songService.SearchByName(name);
     }
+
     //根据歌手id查找歌曲
     @GetMapping("/SingerId/{singerId}")
     public R<List<Song>> SongByName(@PathVariable Integer singerId){

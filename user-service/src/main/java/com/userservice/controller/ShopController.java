@@ -6,10 +6,7 @@ import com.userservice.resultUtils.R;
 import com.userservice.service.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -24,6 +21,28 @@ public class ShopController {
         shopService.selectByPage(pageInfo,Uid);
         return R.success(pageInfo,"查询指定用户购物车列表");
     }
+
+    //将定制歌单添加购物车
+    @PostMapping
+    public R<String> addShop(@RequestBody Shop shop){
+        if(shopService.save(shop)){
+            return R.success("添加至购物车");
+        }else {
+            return R.error("添加失败");
+        }
+    }
+
+    //删除清单
+    @DeleteMapping("/{Sid}")
+    public R<String> DeleteShop(@PathVariable Integer Sid){
+        if(shopService.removeById(Sid)){
+            return R.success("购物清单已移除");
+        }else {
+            return R.error("清单移除失败");
+        }
+    }
+
+
 
 
 }
