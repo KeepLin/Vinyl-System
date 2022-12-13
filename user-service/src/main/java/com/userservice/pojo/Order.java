@@ -3,9 +3,14 @@ package com.userservice.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-@TableName(value = "order")
+
+
+@TableName(value = "orders")
+@Data
 public class Order {
+
     @TableId(type = IdType.AUTO)
     private Integer Oid;
 
@@ -13,11 +18,21 @@ public class Order {
 
     private Integer Uid;
 
+    private String Inch;
+
     private Integer Number;
 
     private Integer Price;
 
-    private String Name;
+    private String consignee;
 
     private String Phone;
+
+    private String Address;
+
+    private String Creatime;
+
+    private String Endtime;
+
+
 }
