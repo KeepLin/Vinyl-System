@@ -1,5 +1,6 @@
 package com.userservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.userservice.mapper.OrderMapper;
 import com.userservice.pojo.Order;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
@@ -35,5 +37,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
 
 
+    }
+
+    @Override
+    public List<Order> getOrderByUid(Integer Uid) {
+        QueryWrapper<Order> queryWrapper= new QueryWrapper<>();
+        queryWrapper.eq("Uid",Uid);
+        return orderMapper.selectList(queryWrapper);
     }
 }
