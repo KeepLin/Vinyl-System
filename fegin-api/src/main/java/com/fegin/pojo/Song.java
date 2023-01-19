@@ -6,7 +6,7 @@ import lombok.Data;
 public class Song {
 
 
-    private Integer id;
+    private Integer songId;
 
     private Integer singerId;
 

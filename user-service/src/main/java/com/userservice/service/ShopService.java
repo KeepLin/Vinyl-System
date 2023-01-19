@@ -6,4 +6,6 @@ import com.userservice.pojo.Shop;
 
 public interface ShopService extends IService<Shop> {
     Page<Shop> selectByPage(Page<Shop> page,Integer Uid);
+
+    Boolean FindShop(Shop shop);
 }

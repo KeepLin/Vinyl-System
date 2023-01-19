@@ -32,7 +32,7 @@ public interface SongMapper extends BaseMapper<Song> {
             "select s.* from song s"+
             "<where>"+
             "<if test='id != null'>"+
-            "s.id IN (select song_id from list_song " +
+            "s.song_id IN (select song_id from list_song " +
             "<where>"+
             "<if test='id != null'>"+
             "song_list_id = #{id}"+
@@ -51,7 +51,7 @@ public interface SongMapper extends BaseMapper<Song> {
             "select s.* from song s"+
             "<where>"+
             "<if test='id != null'>"+
-            "s.id IN (select song_id from list_song " +
+            "s.song_id IN (select song_id from list_song " +
             "<where>"+
             "<if test='id != null'>"+
             "song_list_id = #{id}"+
@@ -69,10 +69,10 @@ public interface SongMapper extends BaseMapper<Song> {
     @Select("<script>"+
             "select s.* from song s"+
             "<where>"+
-            "s.id IN (select song_id from stamp " +
+            "s.song_id IN (select song_id from stamp " +
             "<where>"+
             "<if test='pid != null'>"+
-            "pid = #{pid}"+
+            "playlist_id = #{pid}"+
             "</if>"+
             "</where>)"+
             "</where>"+

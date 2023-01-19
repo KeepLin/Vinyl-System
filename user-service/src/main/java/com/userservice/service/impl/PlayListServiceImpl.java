@@ -51,7 +51,7 @@ public class PlayListServiceImpl extends ServiceImpl<PlayListMapper, PlayList> i
         if (playList != null){
             playList.setPic(imageUrl);
             UpdateWrapper updateWrapper = new UpdateWrapper();
-            updateWrapper.eq("pid",playList.getPid());
+            updateWrapper.eq("playlist_id",playList.getPlaylistId());
             updateWrapper.set("pic",playList.getPic());
             int flag = playListMapper.update(playList, updateWrapper);
             if (flag>0){

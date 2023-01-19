@@ -17,7 +17,7 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
     @Override
     public R<String> AddStamp(Stamp stamp) {
         QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("song_id",stamp.getSongId()).eq("pid",stamp.getPid());
+        queryWrapper.eq("song_id",stamp.getSongId()).eq("playlist_id",stamp.getPlaylistId());
         if(stampMapper.selectCount(queryWrapper)>0){
             return R.error("添加失败,歌曲已存在歌单");
         }else {
@@ -37,7 +37,7 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
     @Override
     public R<String> DeleteList(Integer pid) {
         QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pid",pid);
+        queryWrapper.eq("playlist_id",pid);
         this.stampMapper.delete(queryWrapper);
         return R.success("歌单删除成功");
     }
@@ -45,7 +45,7 @@ public class StampServiceImpl extends ServiceImpl<StampMapper, Stamp> implements
     @Override
     public Boolean CountSong(Integer pid) {
         QueryWrapper<Stamp> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("pid",pid);
+        queryWrapper.eq("playlist_id",pid);
         if(this.stampMapper.selectCount(queryWrapper)<12){
             return true;
         }else {

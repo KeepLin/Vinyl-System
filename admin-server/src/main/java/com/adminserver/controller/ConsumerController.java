@@ -39,9 +39,9 @@ public class ConsumerController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public R<String> deleteUser(@PathVariable Integer id){
-         if (service.removeById(id)) {
+    @DeleteMapping("/{userId}")
+    public R<String> deleteUser(@PathVariable Integer userId){
+         if (service.removeById(userId)) {
             return R.success("用户删除成功");
         }else {
              return R.error("用户删除失败");

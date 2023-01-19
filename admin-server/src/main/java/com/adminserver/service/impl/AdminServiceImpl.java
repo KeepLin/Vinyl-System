@@ -16,10 +16,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public R<Admin> Login(HttpServletRequest request, Admin admin) {
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name",admin.getName());
-        queryWrapper.eq("password",admin.getPassword());
+        queryWrapper.eq("admin_name",admin.getAdminName());
+        queryWrapper.eq("admin_password",admin.getAdminPassword());
         if (count(queryWrapper)>0){
-            request.getSession().setAttribute("name",admin.getName());
+            request.getSession().setAttribute("name",admin.getAdminName());
             return R.success(admin,"欢迎回来");
         }else {
             return R.error("用户名或密码错误");

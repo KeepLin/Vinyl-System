@@ -15,7 +15,7 @@ public interface ConsumerMapper extends BaseMapper<Consumer> {
             "select u.* from consumer u"+
             "<where>"+
             "<if test='id != null'>"+
-            "u.id = #{id}"+
+            "u.user_id = #{id}"+
             "</if>"+
             "<if test='sex != null'>"+
             "and u.sex = #{sex}"+

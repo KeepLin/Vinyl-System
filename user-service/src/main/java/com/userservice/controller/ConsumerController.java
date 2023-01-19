@@ -67,7 +67,7 @@ public class ConsumerController {
     @PutMapping
     public R<String> ChangePassword(@RequestBody Consumer consumer){
         UpdateWrapper<Consumer> wrapper = new UpdateWrapper<>();
-        wrapper.set("password",consumer.getPassword()).set("update_time",new Date()).eq("phone_num",consumer.getPhoneNum());
+        wrapper.set("user_password",consumer.getUserPassword()).set("update_time",new Date()).eq("phone_num",consumer.getPhoneNum());
         boolean flag = service.update(wrapper);
         if (flag){
             return R.success("修改成功");

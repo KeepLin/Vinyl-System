@@ -68,7 +68,7 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
         if (singer!=null){
             singer.setPic(imageUrl);
             UpdateWrapper updateWrapper = new UpdateWrapper();
-            updateWrapper.eq("id",singer.getId());
+            updateWrapper.eq("singer_id",singer.getSingerId());
             updateWrapper.set("pic",singer.getPic());
             int flag = singerMapper.update(singer,updateWrapper);
             if (flag>0){
@@ -139,10 +139,11 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
     @Override
     public List<Singer> SearchBySinger(String name) {
         QueryWrapper<Singer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("name",name);
+        queryWrapper.like("singer_name",name);
         return baseMapper.selectList(queryWrapper);
     }
 
+    //删除歌手
     @Override
     public R<String> deleteSinger(Integer id) {
         Singer singer = baseMapper.selectById(id);

@@ -15,7 +15,7 @@ public interface SongListMapper extends BaseMapper<SongList> {
             "select s.* from song_list s"+
             "<where>"+
             "<if test='title != null'>"+
-            "s.title LIKE CONCAT('%',#{title},'%')"+
+            "s.title LIKE CONCAT(#{title},'%')"+
             "</if>"+
             "<if test='style != null'>"+
             "and s.style LIKE CONCAT('%',#{style},'%')"+

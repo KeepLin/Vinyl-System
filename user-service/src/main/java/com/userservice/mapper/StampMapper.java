@@ -8,17 +8,17 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface StampMapper extends BaseMapper<Stamp> {
-    @Delete ("<script>"+
+    @Delete("<script>"+
             "delete from stamp s"+
             "<where>"+
-            "<if test='pid != null'>"+
-            "s.pid = #{pid} "+
+            "<if test='playlistId != null'>"+
+            "s.playlist_id = #{playlistId} "+
             "</if>"+
             "<if test='songId != null'>"+
             "and s.song_id = #{songId}"+
             "</if>"+
             "</where >"+
             "</script>")
-    Boolean DeleteSong(@Param("pid") Integer pid, @Param("songId") Integer songId);
+    Boolean DeleteSong(@Param("playlistId") Integer playlistId, @Param("songId") Integer songId);
 
 }

@@ -15,9 +15,9 @@ public interface ShopMapper extends BaseMapper<Shop> {
             "select s.*,p.title,p.pic,p.score from playlist p,shop s"+
             "<where>"+
             "<if test='Uid != null'>"+
-            "s.Uid = #{Uid} "+
+            "s.user_id = #{Uid} "+
             "</if>"+
-            "and s.Pid = p.pid"+
+            "and s.playlist_id = p.playlist_id"+
             "</where >"+
             "</script>")
     List<Shop> selectByPage(Page<Shop> page, @Param("Uid") Integer Uid);

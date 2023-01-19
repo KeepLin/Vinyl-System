@@ -10,11 +10,11 @@ import lombok.Data;
 @Data
 public class Shop {
     @TableId(type = IdType.AUTO)
-    private Integer Sid;
+    private Integer shopId;
 
-    private Integer Uid;
+    private Integer userId;
 
-    private Integer Pid;
+    private Integer playlistId;
 
     @TableField(exist = false)
     private String title;

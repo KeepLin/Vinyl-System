@@ -12,11 +12,11 @@ import lombok.Data;
 public class Order {
 
     @TableId(type = IdType.AUTO)
-    private Integer Oid;
+    private Integer orderId;
 
-    private Integer Sid;
+    private Integer shopId;
 
-    private Integer Uid;
+    private Integer userId;
 
     private String Inch;
 

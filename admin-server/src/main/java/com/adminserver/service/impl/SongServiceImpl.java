@@ -31,7 +31,7 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
         Song copy = new Song();
         BeanUtils.copyProperties(song,copy);
         //字符串拼接
-        String s = copy.getSingername() + "-" + copy.getName();
+        String s = copy.getSingerName() + "-" + copy.getName();
         copy.setName(s);
 
         return save(copy);

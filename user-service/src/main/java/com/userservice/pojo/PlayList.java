@@ -10,11 +10,11 @@ import lombok.Data;
 public class PlayList {
 
     @TableId(type = IdType.AUTO)
-    private Integer pid;
+    private Integer playlistId;
 
     private String title;
 
-    private Integer uid;
+    private Integer userId;
 
     private Integer score;
 

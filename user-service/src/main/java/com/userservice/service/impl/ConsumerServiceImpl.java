@@ -24,11 +24,11 @@ public class ConsumerServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> i
     public R<Consumer> Login(HttpServletRequest request, Consumer consumer) {
         QueryWrapper<Consumer> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("phone_num",consumer.getPhoneNum());
-        queryWrapper.eq("password",consumer.getPassword());
+        queryWrapper.eq("user_password",consumer.getUserPassword());
         Consumer user = new Consumer();
         user = baseMapper.selectOne(queryWrapper);
         if(user != null){
-            request.getSession().setAttribute("username",user.getUsername());
+            request.getSession().setAttribute("username",user.getUserName());
             return R.success(user,"欢迎回来");
         }else {
             return R.error("用户名或密码错误");

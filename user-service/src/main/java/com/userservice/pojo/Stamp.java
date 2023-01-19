@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class Stamp {
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer stampId;
 
     private Integer songId;
 
-    private Integer pid;
+    private Integer playlistId;
 
 }

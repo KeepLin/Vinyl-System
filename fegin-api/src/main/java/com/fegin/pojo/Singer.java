@@ -8,9 +8,9 @@ import java.util.Date;
 @Data
 public class Singer {
 
-    private Integer id;
+    private Integer singerId;
 
-    private String name;
+    private String singerName;
 
     private Byte sex;
 

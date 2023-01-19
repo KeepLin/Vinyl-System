@@ -42,7 +42,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public List<Order> getOrderByUid(Integer Uid) {
         QueryWrapper<Order> queryWrapper= new QueryWrapper<>();
-        queryWrapper.eq("Uid",Uid);
+        queryWrapper.eq("user_id",Uid);
         return orderMapper.selectList(queryWrapper);
     }
 }

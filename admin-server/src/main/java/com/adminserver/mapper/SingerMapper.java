@@ -15,7 +15,7 @@ public interface SingerMapper extends BaseMapper<Singer> {
             "select s.* from singer s"+
             "<where>"+
             "<if test='name != null'>"+
-            "s.name LIKE CONCAT('%',#{name},'%')"+
+            "s.singer_name LIKE CONCAT('%',#{name},'%')"+
             "</if>"+
             "<if test='sex != null'>"+
             "and s.sex = #{sex}"+

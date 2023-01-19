@@ -15,7 +15,7 @@ public interface PlayListMapper extends BaseMapper<PlayList> {
             "select p.* from playlist p"+
             "<where>"+
             "<if test='uid != null'>"+
-            "p.uid = #{uid}"+
+            "p.user_id = #{uid}"+
             "</if>"+
             "</where >"+
             "</script>")

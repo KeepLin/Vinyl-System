@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Admin {
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer adminId;
 
-    private String name;
+    private String adminName;
 
-    private String password;
+    private String adminPassword;
 }

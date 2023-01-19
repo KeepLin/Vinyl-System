@@ -1,7 +1,6 @@
 package com.adminserver.controller;
 
 import com.adminserver.pojo.Singer;
-import com.adminserver.pojo.Song;
 import com.adminserver.resultUtils.R;
 import com.adminserver.service.SingerService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -60,7 +58,7 @@ public class SingerController {
 
     // 删除歌手
     @DeleteMapping("/{id}")
-    public R<String> delete(@PathVariable Integer id) throws FileNotFoundException {
+    public R<String> delete(@PathVariable Integer id){
         return singerService.deleteSinger(id);
     }
 

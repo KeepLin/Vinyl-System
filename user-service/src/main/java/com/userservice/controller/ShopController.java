@@ -25,10 +25,11 @@ public class ShopController {
     //将定制歌单添加购物车
     @PostMapping
     public R<String> addShop(@RequestBody Shop shop){
-        if(shopService.save(shop)){
+        if(shopService.FindShop(shop)){
+            shopService.save(shop);
             return R.success("添加至购物车");
         }else {
-            return R.error("添加失败");
+            return R.error("购物车已存在此商品！");
         }
     }
 

@@ -9,11 +9,11 @@ import java.util.Date;
 @Data
 public class Consumer {
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer userId;
 
-    private String username;
+    private String userName;
 
-    private String password;
+    private String userPassword;
 
     private Byte sex;
 

@@ -12,9 +12,9 @@ import java.util.Date;
 public class Singer {
 
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer singerId;
 
-    private String name;
+    private String singerName;
 
     private Byte sex;
 

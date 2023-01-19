@@ -10,7 +10,7 @@ import java.util.Date;
 public class Song {
 
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer songId;
 
     private Integer singerId;
 
@@ -21,6 +21,6 @@ public class Song {
     private String time;
 
     @TableField(exist = false)
-    private String singername;
+    private String singerName;
 
 }
