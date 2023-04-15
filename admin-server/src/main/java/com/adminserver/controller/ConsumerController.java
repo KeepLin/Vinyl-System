@@ -22,7 +22,7 @@ public class ConsumerController {
 
     //分页显示
     @GetMapping("/{currentPage}/{pageSize}")
-    public R<Page> allSinger(@PathVariable Integer currentPage, @PathVariable Integer pageSize, Integer id, Integer sex) {
+    public R<Page> allUser(@PathVariable Integer currentPage, @PathVariable Integer pageSize, Integer id, Integer sex) {
         Page<Consumer> pageInfo = new Page<>(currentPage,pageSize);
         if (id != null){
             service.selectByPage(pageInfo,id,null);
@@ -34,8 +34,6 @@ public class ConsumerController {
             service.selectByPage(pageInfo,null,null);
             return R.success(pageInfo,"用户信息列表");
         }
-
-
     }
 
 

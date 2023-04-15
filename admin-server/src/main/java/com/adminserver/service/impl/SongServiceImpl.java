@@ -17,8 +17,8 @@ public class SongServiceImpl extends ServiceImpl<SongMapper, Song> implements So
 
 
     @Override
-    public Page<Song> selectByPage(Page<Song> page, String name, Integer singerid) {
-        return page.setRecords(this.baseMapper.selectByPage(page,name,singerid));
+    public Page<Song> selectByPage(Page<Song> page, String name) {
+        return page.setRecords(this.baseMapper.selectByPage(page,name));
     }
 
     @Override

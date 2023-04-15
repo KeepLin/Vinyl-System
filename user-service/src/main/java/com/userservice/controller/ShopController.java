@@ -16,9 +16,9 @@ public class ShopController {
     private ShopService shopService;
 
     @GetMapping("/{currentPage}/{pageSize}/{Uid}")
-    public R<Page> SelectShopMessageByUid(@PathVariable Integer currentPage,@PathVariable Integer pageSize,@PathVariable Integer Uid){
+    public R<Page> selectShopMessageByUid(@PathVariable Integer currentPage,@PathVariable Integer pageSize,@PathVariable Integer Uid){
         Page<Shop> pageInfo = new Page<>(currentPage, pageSize);
-        shopService.selectByPage(pageInfo,Uid);
+        shopService.selectShopByPage(pageInfo,Uid);
         return R.success(pageInfo,"查询指定用户购物车列表");
     }
 
@@ -33,7 +33,7 @@ public class ShopController {
         }
     }
 
-    //删除清单
+    //删除商品
     @DeleteMapping("/{Sid}")
     public R<String> DeleteShop(@PathVariable Integer Sid){
         if(shopService.removeById(Sid)){

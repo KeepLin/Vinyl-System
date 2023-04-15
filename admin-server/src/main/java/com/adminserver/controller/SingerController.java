@@ -42,8 +42,8 @@ public class SingerController {
     public R<List<Integer>> countCountry(){
     //data: ["中国", "韩国", "意大利", "新加坡", "美国", "马来西亚", "西班牙", "日本"]
         return R.success(singerService.countCountry(),"歌手国籍统计");
-
     }
+
     // 添加歌手
     @PostMapping
     public R<String> addSinger(@RequestBody Singer addSingerRequest) {
@@ -53,7 +53,6 @@ public class SingerController {
         }else {
             return R.error("歌手添加失败");
         }
-
     }
 
     // 删除歌手
@@ -103,7 +102,7 @@ public class SingerController {
 
     // 更新歌手头像
     @PostMapping("/upload/image")
-    public R<String> updateSingerPic(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,@RequestParam("id") int id) throws FileNotFoundException {
+    public R<String> updateSingerPic(@RequestParam("file") MultipartFile multipartFile,@RequestParam("id") int id) throws FileNotFoundException {
         return singerService.updateSingerPic(multipartFile,id);
     }
 

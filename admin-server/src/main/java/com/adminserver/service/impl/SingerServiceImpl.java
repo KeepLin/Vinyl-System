@@ -121,9 +121,9 @@ public class SingerServiceImpl extends ServiceImpl<SingerMapper, Singer> impleme
         }
         Collection<Integer> collection = map.values();
         List<Integer> integerList = new ArrayList<>(collection);
-
         return integerList;
     }
+
 
     // 添加歌手
     @Override

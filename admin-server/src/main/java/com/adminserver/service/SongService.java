@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SongService extends IService<Song> {
     //分页显示
-    Page<Song> selectByPage(Page<Song> page, String name, Integer singerid);
+    Page<Song> selectByPage(Page<Song> page, String name);
 
     //歌单分页显示
     Page<Song> selectBySongList(Page<Song> page, Integer id,String name );

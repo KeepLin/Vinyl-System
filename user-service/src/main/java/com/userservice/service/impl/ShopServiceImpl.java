@@ -15,7 +15,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements Sh
     private ShopMapper shopMapper;
 
     @Override
-    public Page<Shop> selectByPage(Page<Shop> page, Integer Uid) {
+    public Page<Shop> selectShopByPage(Page<Shop> page, Integer Uid) {
         return page.setRecords(this.shopMapper.selectByPage(page,Uid));
     }
 
@@ -23,13 +23,13 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements Sh
     @Override
     public Boolean FindShop(Shop shop) {
         QueryWrapper<Shop> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("playlist_id",shop.getPlaylistId()).eq("user_id",shop.getShopId());
+        queryWrapper.eq("playlist_id",shop.getPlaylistId()).eq("user_id",shop.getUserId());
         Integer record = shopMapper.selectCount(queryWrapper);
+        System.out.println(record);
         if (record>0){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         }
-
     }
 }

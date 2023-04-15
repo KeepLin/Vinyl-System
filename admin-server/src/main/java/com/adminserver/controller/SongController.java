@@ -37,16 +37,13 @@ public class SongController {
 
     //分页显示
     @GetMapping("/{currentPage}/{pageSize}")
-    public R<Page> allSong(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String name,Integer singerid){
+    public R<Page> allSong(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String name){
         Page<Song> pageInfo = new Page(currentPage,pageSize);
         if(name != null && name.length()>0){
-            songService.selectByPage(pageInfo,name,null);
-            return R.success(pageInfo,"数据库歌曲消息列表");
-        }else if (singerid!=null){
-            songService.selectByPage(pageInfo,null,singerid);
+            songService.selectByPage(pageInfo,name);
             return R.success(pageInfo,"数据库歌曲消息列表");
         }else {
-            songService.selectByPage(pageInfo,null,null);
+            songService.selectByPage(pageInfo,null);
             return R.success(pageInfo,"数据库歌曲消息列表");
         }
     }
