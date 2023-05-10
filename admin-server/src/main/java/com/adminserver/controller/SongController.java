@@ -35,7 +35,7 @@ public class SongController {
         return R.error("没有此歌曲信息");
     }
 
-    //分页显示
+    //歌曲分页显示
     @GetMapping("/{currentPage}/{pageSize}")
     public R<Page> allSong(@PathVariable Integer currentPage, @PathVariable Integer pageSize, String name){
         Page<Song> pageInfo = new Page(currentPage,pageSize);
@@ -83,7 +83,7 @@ public class SongController {
     }
 
 
-    // 更新歌曲信息
+    //更新歌曲信息
     @PutMapping
     public R<String> updateSingerMsg(@RequestBody Song updateSongRequest) {
         if (songService.UpdateMsg(updateSongRequest)){

@@ -111,8 +111,6 @@
                 <version>${fastjson.version}</version>
             </dependency>
 
-            <!--展示图片-->
-
             <!--文件上传-->
             <dependency>
                 <groupId>commons-fileupload</groupId>
